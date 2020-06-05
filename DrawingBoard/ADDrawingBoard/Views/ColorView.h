@@ -1,5 +1,5 @@
 //
-//  ColorCell.h
+//  ColorView.h
 //  DrawingBoard
 //
 //  Created by admin on 2020/6/4.
@@ -10,9 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ColorCell : UICollectionViewCell
+@interface ColorView : UIView
 
-@property (nonatomic, strong) UIButton *colorImage;
+@property (nonatomic, strong) NSIndexPath *selectIndexPath;
+@property (nonatomic, copy) void (^selectBlock)(NSDictionary *dict);
 
 @end
 

@@ -12,6 +12,7 @@
 #import "ColorView.h"
 #import "InputView.h"
 #import "ToolView.h"
+#import "LayerTypeView.h"
 
 @interface ViewController () <ADDrawingBoardDelegate, ToolViewDelegate> {
     NSInteger _oldIndex;
@@ -22,9 +23,12 @@
 @property (nonatomic, strong) ColorView *colorView;
 @property (nonatomic, strong) InputView *inputView;
 @property (nonatomic, strong) ToolView *toolView;
+@property (nonatomic, strong) LayerTypeView *typeView;
 
 @property (nonatomic, strong) ADNoteView *selectedNoteView;
-@property (nonatomic, strong) ADDrawingRulerLineLayer *selectedLayer;
+@property (nonatomic, strong) ADDrawingLayer *selectedLayer;
+
+@property (nonatomic, assign) ADDrawingType currentDrawingType;
 
 @end
 
@@ -101,7 +105,7 @@
 }
 
 #pragma mark - ADDrawingBoardDelegate
-- (void)didSelectDrawingLayer:(ADDrawingRulerLineLayer *)drawingLayer {
+- (void)didSelectDrawingLayer:(ADDrawingLayer *)drawingLayer {
     self.selectedLayer = drawingLayer;
     if (drawingLayer) {
         if (self.tabBar.index != 0) {
@@ -173,7 +177,7 @@
         return;
     }
     switch (drawingType) {
-        case ADDrawingTypeLineLayer: {
+        case ADDrawingTypeRulerLine: {
             self.tabBar.index = 2;
             if (self.inputView) {
                 [self hideInputView:NO];
@@ -184,6 +188,9 @@
         case ADDrawingTypeText: {
             self.tabBar.index = 1;
         }
+            break;
+            
+        default:
             break;
     }
     _oldIndex = self.tabBar.index;
@@ -204,12 +211,14 @@
     switch (tag) {
         case 0: {
             [self showColorView];
+            [self hideTypeView];
             self.drawingBoard.isColorMode = YES;
             break;
         }
             
         case 1: {
             [self hideColorView];
+            [self hideTypeView];
             self.drawingBoard.drawingType = ADDrawingTypeText;
             self.drawingBoard.isColorMode = NO;
             _oldIndex = self.tabBar.index;
@@ -218,13 +227,36 @@
             
         case 2: {
             [self hideColorView];
-            self.drawingBoard.drawingType = ADDrawingTypeLineLayer;
+            if (_oldIndex == 2) {
+                [self showTypeView];
+            }
+            self.drawingBoard.drawingType = self.currentDrawingType;
             self.drawingBoard.isColorMode = NO;
             _oldIndex = self.tabBar.index;
             break;
         }
     }
     [self refreshTitleViewButtons];
+}
+
+- (void)showTypeView {
+    if ([self.view.subviews containsObject:self.typeView]) {
+        [self hideTypeView];
+        self.tabBar.index = _oldIndex;
+    } else {
+        [self.view insertSubview:self.typeView belowSubview:self.tabBar];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.typeView.frame = CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR - self.tabBar.height - self.typeView.height, ScreenWidth, self.typeView.height);
+        }];
+    }
+}
+
+- (void)hideTypeView {
+    [UIView animateWithDuration:0.3 animations:^{
+        self.typeView.frame = CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR, ScreenWidth, self.typeView.height);
+    } completion:^(BOOL finished) {
+        [self.typeView removeFromSuperview];
+    }];
 }
 
 - (void)showColorView {
@@ -282,7 +314,7 @@
     if (!_colorView) {
         _colorView = [[ColorView alloc] initWithFrame:CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR, ScreenWidth, 60)];
         WeakSelf(self);
-        _colorView.selectColorBlock = ^(NSDictionary * _Nonnull dict) {
+        _colorView.selectBlock = ^(NSDictionary * _Nonnull dict) {
             [weakSelf refreshColor:dict];
         };
     }
@@ -302,6 +334,20 @@
         _toolView.delegate = self;
     }
     return _toolView;
+}
+
+- (LayerTypeView *)typeView {
+    if (!_typeView) {
+        _typeView = [[LayerTypeView alloc] initWithFrame:CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR, ScreenWidth, 60)];
+        WeakSelf(self);
+        _typeView.selectBlock = ^(NSDictionary * _Nonnull dict) {
+            weakSelf.currentDrawingType = (ADDrawingType)[dict[@"type"] integerValue];
+            weakSelf.drawingBoard.drawingType = weakSelf.currentDrawingType;
+            weakSelf.typeView.selectIndexPath = [NSIndexPath indexPathForRow:[dict[@"type"] integerValue] inSection:0];
+            [weakSelf hideTypeView];
+        };
+    }
+    return _typeView;
 }
 
 @end

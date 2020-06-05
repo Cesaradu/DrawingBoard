@@ -7,7 +7,7 @@
 //
 
 #import "ColorView.h"
-#import "ColorCell.h"
+#import "SelectCell.h"
 
 @interface ColorView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -41,7 +41,7 @@
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    [self.collectionView registerClass:[ColorCell class] forCellWithReuseIdentifier:@"ColorCell"];
+    [self.collectionView registerClass:[SelectCell class] forCellWithReuseIdentifier:@"SelectCell"];
     [self addSubview:self.collectionView];
     
 }
@@ -56,15 +56,15 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ColorCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ColorCell" forIndexPath:indexPath];
+    SelectCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SelectCell" forIndexPath:indexPath];
     NSDictionary *dict = self.colorArray[indexPath.row];
-    [cell.colorImage setImage:[UIImage imageNamed:dict[@"imageNormal"]] forState:UIControlStateNormal];
-    [cell.colorImage setImage:[UIImage imageNamed:dict[@"imageSelect"]] forState:UIControlStateSelected];
+    [cell.image setImage:[UIImage imageNamed:dict[@"imageNormal"]] forState:UIControlStateNormal];
+    [cell.image setImage:[UIImage imageNamed:dict[@"imageSelect"]] forState:UIControlStateSelected];
     
     if ([indexPath isEqual:self.selectIndexPath]) {
-        cell.colorImage.selected = YES;
+        cell.image.selected = YES;
     } else {
-        cell.colorImage.selected = NO;
+        cell.image.selected = NO;
     }
     
     return cell;
@@ -73,8 +73,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.selectIndexPath = indexPath;
     [self.collectionView reloadData];
-    if (self.selectColorBlock) {
-        self.selectColorBlock(self.colorArray[indexPath.row]);
+    if (self.selectBlock) {
+        self.selectBlock(self.colorArray[indexPath.row]);
     }
 }
 

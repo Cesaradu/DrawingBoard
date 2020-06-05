@@ -7,19 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ADDrawingRulerLineLayer.h"
+#import "ADDrawingLayer.h"
 #import "ADNoteView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, ADDrawingType) {
-    ADDrawingTypeLineLayer = 0, //线段
-    ADDrawingTypeText //文本
-};
-
 @protocol ADDrawingBoardDelegate <NSObject>
 
-- (void)didSelectDrawingLayer:(ADDrawingRulerLineLayer *)drawingLayer;
+- (void)didSelectDrawingLayer:(ADDrawingLayer *)drawingLayer;
 - (void)didSelectNoteTextView:(ADNoteView *)noteView;
 - (void)currentDrawingType:(ADDrawingType)drawingType;
 - (void)didTouchEmptyZone;
@@ -53,7 +48,7 @@ typedef NS_ENUM(NSInteger, ADDrawingType) {
 - (void)redoAction;
 
 - (void)removeCurrentNoteView:(ADNoteView *)noteView;
-- (void)removeCurrentLayer:(ADDrawingRulerLineLayer *)drawingLayer;
+- (void)removeCurrentLayer:(ADDrawingLayer *)drawingLayer;
 
 //刷新noteArray中noteView的序号
 - (void)refreshNoteArray;

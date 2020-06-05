@@ -17,8 +17,8 @@
 @property (nonatomic, strong) UIImageView *bgImageView; //背景图
 
 //layer
-@property (nonatomic, strong) ADDrawingRulerLineLayer *drawingLayer;
-@property (nonatomic, strong) ADDrawingRulerLineLayer *selectedLayer; //选中的
+@property (nonatomic, strong) ADDrawingLayer *drawingLayer;
+@property (nonatomic, strong) ADDrawingLayer *selectedLayer; //选中的
 @property (nonatomic, assign) BOOL isMoveStartPoint;
 @property (nonatomic, assign) BOOL isMoveEndPoint;
 @property (nonatomic, assign) BOOL isMoveLine;
@@ -42,7 +42,7 @@
 - (void)configInit {
     self.userInteractionEnabled = YES;
     self.backgroundColor = [UIColor clearColor];
-    self.drawingType = ADDrawingTypeLineLayer;
+    self.drawingType = ADDrawingTypeRulerLine;
     self.lineColor = [UIColor colorWithHexString:YellowColor];
 }
 
@@ -50,7 +50,7 @@
     [self getSelectNote:currentPoint];
     [self getSelectLayer:currentPoint];
     if (self.selectedLayer) {
-        self.drawingType = ADDrawingTypeLineLayer;
+        self.drawingType = ADDrawingTypeRulerLine;
         return;
     }
     if (self.selectedNote) {
@@ -80,16 +80,71 @@
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeLineLayer: {
+//        case ADDrawingTypeGraffiti: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeStraightLine: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDottedLine: {
+//
+//            break;
+//        }
+        case ADDrawingTypeRulerLine: {
             [self configLayerTouchBeginWithCurrentPoint:currentPoint];
-        }
             break;
+        }
             
+//        case ADDrawingTypeArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRulerArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRightTriangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRectangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDiamond: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeTrapezoid: {
+//
+//            break;
+//        }
+//        case ADDrawingTypePentagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeHexagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeCircular: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeOval: {
+//
+//            break;
+//        }
         case ADDrawingTypeText: {
             if (!self.isColorMode) {
                 [self configTextTouchBeginWithCurrentPoint:currentPoint];
             }
+            break;
         }
+            
+        default:
             break;
     }
 }
@@ -110,14 +165,68 @@
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeLineLayer: {
+//        case ADDrawingTypeGraffiti: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeStraightLine: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDottedLine: {
+//
+//            break;
+//        }
+        case ADDrawingTypeRulerLine: {
             [self configLayerMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
-        }
             break;
-            
+        }
+//        case ADDrawingTypeArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRulerArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRightTriangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRectangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDiamond: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeTrapezoid: {
+//
+//            break;
+//        }
+//        case ADDrawingTypePentagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeHexagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeCircular: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeOval: {
+//
+//            break;
+//        }
         case ADDrawingTypeText: {
             [self configTextMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
+            break;
         }
+        
+        default:
             break;
     }
 }
@@ -132,17 +241,71 @@
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeLineLayer: {
+//        case ADDrawingTypeGraffiti: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeStraightLine: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDottedLine: {
+//
+//            break;
+//        }
+        case ADDrawingTypeRulerLine: {
             if (CGPointEqualToPoint(currentPoint, previousPoint)) {
                 return;
             }
             [self configLayerTouchEnd];
-        }
             break;
-            
+        }
+//        case ADDrawingTypeArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRulerArrow: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRightTriangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeRectangle: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeDiamond: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeTrapezoid: {
+//
+//            break;
+//        }
+//        case ADDrawingTypePentagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeHexagon: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeCircular: {
+//
+//            break;
+//        }
+//        case ADDrawingTypeOval: {
+//
+//            break;
+//        }
         case ADDrawingTypeText: {
             [self configTextTouchEnd];
+            break;
         }
+            
+        default:
             break;
     }
     
@@ -157,14 +320,14 @@
 }
 
 #pragma mark - LayerAction
-- (ADDrawingRulerLineLayer *)getSelectLayer:(CGPoint)point {
+- (ADDrawingLayer *)getSelectLayer:(CGPoint)point {
     //判断距离最小值，取出最小值以及所在下标
-    ADDrawingRulerLineLayer *firstLayer = self.layerArray.firstObject;
+    ADDrawingLayer *firstLayer = self.layerArray.firstObject;
     double minDistance = [self calculateDistanceFromTouchPoint:point toStartPoint:firstLayer.startPoint andEndPoint:firstLayer.endPoint];
     int minIndex = 0;
     NSMutableArray *distanceArray = [NSMutableArray new];
     for (int i = 0; i < self.layerArray.count; i ++) {
-        ADDrawingRulerLineLayer *layer = self.layerArray[i];
+        ADDrawingLayer *layer = self.layerArray[i];
         double distance = [self calculateDistanceFromTouchPoint:point toStartPoint:layer.startPoint andEndPoint:layer.endPoint];
         [distanceArray addObject:[NSNumber numberWithDouble:distance]];
         if (distance < minDistance) {
@@ -176,7 +339,7 @@
     //若最小值小于20, 则根据最小值下标，取出layer，否则layer为nil
     if (minDistance <= 20) {
         for (int i = 0; i < self.layerArray.count; i ++) {
-            ADDrawingRulerLineLayer *layer = self.layerArray[i];
+            ADDrawingLayer *layer = self.layerArray[i];
             if (i == minIndex) {
                 layer.isEditable = YES;
                 self.selectedLayer = layer;
@@ -242,7 +405,7 @@
     } else {
         //没有选中layer，则新画一个layer
         if (self.isTouch) {
-            self.drawingLayer = [[ADDrawingRulerLineLayer alloc] initWithStartPoint:previousPoint];
+            self.drawingLayer = [ADDrawingLayer createLayerWithStartPoint:currentPoint type:self.drawingType];
             self.drawingLayer.lineColor = self.lineColor;
             self.drawingLayer.index = (int)self.layerArray.count + 1;
             [self.layer addSublayer:self.drawingLayer];
@@ -267,7 +430,7 @@
 
 - (void)replaceLayerToLayerArray {
     for (int i = 0; i < self.layerArray.count; i ++) {
-        ADDrawingRulerLineLayer *layer = self.layerArray[i];
+        ADDrawingLayer *layer = self.layerArray[i];
         if (layer.index == self.selectedLayer.index) {
             [self.layerArray replaceObjectAtIndex:i withObject:self.selectedLayer];
         }
@@ -363,7 +526,7 @@
     [self addUndoSteps];
 }
 
-- (void)removeCurrentLayer:(ADDrawingRulerLineLayer *)drawingLayer {
+- (void)removeCurrentLayer:(ADDrawingLayer *)drawingLayer {
     [self.layerArray removeObject:drawingLayer];
     [drawingLayer removeFromSuperlayer];
     [self addUndoSteps]; //删除layer可撤回
@@ -418,7 +581,7 @@
 
 - (void)clean {
     //移除线段layer
-    for (ADDrawingRulerLineLayer *layer in self.layerArray) {
+    for (ADDrawingLayer *layer in self.layerArray) {
         [layer removeFromSuperlayer];
     }
     [self.layerArray removeAllObjects];
@@ -441,7 +604,7 @@
     
     //添加drawLayer
     for (LineLayerModel *layerModel in undoModel.layerArray) {
-        ADDrawingRulerLineLayer *drawingLayer = [[ADDrawingRulerLineLayer alloc] initWithStartPoint:CGPointFromString(layerModel.startPointString)];
+        ADDrawingLayer *drawingLayer = [[ADDrawingLayer alloc] initWithStartPoint:CGPointFromString(layerModel.startPointString)];
         drawingLayer.layerModel = layerModel;
         [self.layer addSublayer:drawingLayer];
         [self.layerArray addObject:drawingLayer];

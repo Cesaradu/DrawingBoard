@@ -20,31 +20,24 @@
 
 - (instancetype)initWithStartPoint:(CGPoint)startPoint {
     if (self = [super init]) {
-        self.frame = [UIScreen mainScreen].bounds;
-        self.lineJoin = kCALineJoinRound;
-        self.lineCap = kCALineCapRound;
-        self.strokeColor = [UIColor blackColor].CGColor;
-        self.fillColor = [UIColor clearColor].CGColor;
-        self.lineColor = [UIColor colorWithHexString:YellowColor];
-        self.lineWidth = 2;
         self.startPoint = startPoint;
     }
     return self;
 }
 
 - (void)setLineColor:(UIColor *)lineColor {
-    _lineColor = lineColor;
+    super.lineColor = lineColor;
     self.strokeColor = lineColor.CGColor;
     self.roundLayer1.strokeColor = lineColor.CGColor;
     self.roundLayer2.strokeColor = lineColor.CGColor;
 }
 
 - (void)setCenterPoint:(CGPoint)centerPoint {
-    _centerPoint = centerPoint;
+    super.centerPoint = centerPoint;
 }
 
 - (void)setIsEditable:(BOOL)isEditable {
-    _isEditable = isEditable;
+    super.isEditable = isEditable;
     _roundLayer1.strokeColor = self.lineColor.CGColor;
     _roundLayer2.strokeColor = self.lineColor.CGColor;
     if (isEditable) {
@@ -56,19 +49,8 @@
     }
 }
 
-- (void)setLayerLineWidth:(CGFloat)layerLineWidth {
-    if (layerLineWidth <= 1) {
-        _layerLineWidth = 1;
-    } else if (layerLineWidth >= 20) {
-        _layerLineWidth = 20;
-    } else {
-        _layerLineWidth = layerLineWidth;
-    }
-    self.lineWidth = _layerLineWidth;
-}
-
 - (void)setLayerModel:(LineLayerModel *)layerModel {
-    _layerModel = layerModel;
+    super.layerModel = layerModel;
     self.index = layerModel.layerId;
     self.startPoint = CGPointFromString(layerModel.startPointString);
     self.endPoint = CGPointFromString(layerModel.endPointString);

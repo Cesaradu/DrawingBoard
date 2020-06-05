@@ -37,7 +37,7 @@
 		847C199824889EEA005371C3 /* ADFeedbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C199724889EEA005371C3 /* ADFeedbackManager.m */; };
 		847C199B2488A24A005371C3 /* ADTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C199A2488A24A005371C3 /* ADTabBar.m */; };
 		847C199E2488B7ED005371C3 /* ColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C199D2488B7ED005371C3 /* ColorView.m */; };
-		847C19A12488B836005371C3 /* ColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19A02488B836005371C3 /* ColorCell.m */; };
+		847C19A12488B836005371C3 /* SelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19A02488B836005371C3 /* SelectCell.m */; };
 		847C19A42488BAD6005371C3 /* InputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19A32488BAD6005371C3 /* InputView.m */; };
 		847C19C62488BD98005371C3 /* IQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19A72488BD98005371C3 /* IQTextView.m */; };
 		847C19C72488BD98005371C3 /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19AB2488BD98005371C3 /* IQToolbar.m */; };
@@ -53,6 +53,10 @@
 		847C19D12488BD98005371C3 /* IQUIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19C32488BD98005371C3 /* IQUIViewController+Additions.m */; };
 		847C19D22488BD98005371C3 /* IQKeyboardReturnKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19C52488BD98005371C3 /* IQKeyboardReturnKeyHandler.m */; };
 		847C19D52488C361005371C3 /* ToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C19D42488C361005371C3 /* ToolView.m */; };
+		848EA8D92489DB6600FF74CC /* LayerTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8D82489DB6600FF74CC /* LayerTypeView.m */; };
+		848EA8DF2489EA5500FF74CC /* ADDrawingGraffitiLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8DE2489EA5500FF74CC /* ADDrawingGraffitiLayer.m */; };
+		848EA8E22489EAEB00FF74CC /* ADDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */; };
+		848EA8E52489EB8700FF74CC /* ADDrawingStraightLineLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,8 +125,8 @@
 		847C199A2488A24A005371C3 /* ADTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADTabBar.m; sourceTree = "<group>"; };
 		847C199C2488B7ED005371C3 /* ColorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorView.h; sourceTree = "<group>"; };
 		847C199D2488B7ED005371C3 /* ColorView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorView.m; sourceTree = "<group>"; };
-		847C199F2488B836005371C3 /* ColorCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorCell.h; sourceTree = "<group>"; };
-		847C19A02488B836005371C3 /* ColorCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorCell.m; sourceTree = "<group>"; };
+		847C199F2488B836005371C3 /* SelectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectCell.h; sourceTree = "<group>"; };
+		847C19A02488B836005371C3 /* SelectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectCell.m; sourceTree = "<group>"; };
 		847C19A22488BAD6005371C3 /* InputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InputView.h; sourceTree = "<group>"; };
 		847C19A32488BAD6005371C3 /* InputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InputView.m; sourceTree = "<group>"; };
 		847C19A72488BD98005371C3 /* IQTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQTextView.m; sourceTree = "<group>"; };
@@ -155,6 +159,14 @@
 		847C19C52488BD98005371C3 /* IQKeyboardReturnKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQKeyboardReturnKeyHandler.m; sourceTree = "<group>"; };
 		847C19D32488C361005371C3 /* ToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToolView.h; sourceTree = "<group>"; };
 		847C19D42488C361005371C3 /* ToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ToolView.m; sourceTree = "<group>"; };
+		848EA8D72489DB6600FF74CC /* LayerTypeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayerTypeView.h; sourceTree = "<group>"; };
+		848EA8D82489DB6600FF74CC /* LayerTypeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LayerTypeView.m; sourceTree = "<group>"; };
+		848EA8DD2489EA5500FF74CC /* ADDrawingGraffitiLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingGraffitiLayer.h; sourceTree = "<group>"; };
+		848EA8DE2489EA5500FF74CC /* ADDrawingGraffitiLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingGraffitiLayer.m; sourceTree = "<group>"; };
+		848EA8E02489EAEB00FF74CC /* ADDrawingLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingLayer.h; sourceTree = "<group>"; };
+		848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingLayer.m; sourceTree = "<group>"; };
+		848EA8E32489EB8700FF74CC /* ADDrawingStraightLineLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingStraightLineLayer.h; sourceTree = "<group>"; };
+		848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingStraightLineLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,26 +224,9 @@
 			children = (
 				847C194A248896D5005371C3 /* ADDrawingBoard.h */,
 				847C1946248896D5005371C3 /* ADDrawingBoard.m */,
-				847C1948248896D5005371C3 /* ADDrawingRulerLineLayer.h */,
-				847C1947248896D5005371C3 /* ADDrawingRulerLineLayer.m */,
-				847C1949248896D5005371C3 /* ADNoteView.h */,
-				847C1945248896D5005371C3 /* ADNoteView.m */,
-				847C198424889C82005371C3 /* UndoModel.h */,
-				847C198524889C82005371C3 /* UndoModel.m */,
-				847C198724889D5F005371C3 /* LineLayerModel.h */,
-				847C198824889D5F005371C3 /* LineLayerModel.m */,
-				847C198A24889D68005371C3 /* NoteModel.h */,
-				847C198B24889D68005371C3 /* NoteModel.m */,
-				847C19992488A24A005371C3 /* ADTabBar.h */,
-				847C199A2488A24A005371C3 /* ADTabBar.m */,
-				847C199C2488B7ED005371C3 /* ColorView.h */,
-				847C199D2488B7ED005371C3 /* ColorView.m */,
-				847C199F2488B836005371C3 /* ColorCell.h */,
-				847C19A02488B836005371C3 /* ColorCell.m */,
-				847C19A22488BAD6005371C3 /* InputView.h */,
-				847C19A32488BAD6005371C3 /* InputView.m */,
-				847C19D32488C361005371C3 /* ToolView.h */,
-				847C19D42488C361005371C3 /* ToolView.m */,
+				848EA8DC2489E9F300FF74CC /* Models */,
+				848EA8DB2489E9DD00FF74CC /* Views */,
+				848EA8DA2489E9CB00FF74CC /* Layers */,
 			);
 			path = ADDrawingBoard;
 			sourceTree = "<group>";
@@ -402,6 +397,55 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		848EA8DA2489E9CB00FF74CC /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				848EA8E02489EAEB00FF74CC /* ADDrawingLayer.h */,
+				848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */,
+				847C1948248896D5005371C3 /* ADDrawingRulerLineLayer.h */,
+				847C1947248896D5005371C3 /* ADDrawingRulerLineLayer.m */,
+				848EA8DD2489EA5500FF74CC /* ADDrawingGraffitiLayer.h */,
+				848EA8DE2489EA5500FF74CC /* ADDrawingGraffitiLayer.m */,
+				848EA8E32489EB8700FF74CC /* ADDrawingStraightLineLayer.h */,
+				848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */,
+			);
+			path = Layers;
+			sourceTree = "<group>";
+		};
+		848EA8DB2489E9DD00FF74CC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				847C1949248896D5005371C3 /* ADNoteView.h */,
+				847C1945248896D5005371C3 /* ADNoteView.m */,
+				847C19992488A24A005371C3 /* ADTabBar.h */,
+				847C199A2488A24A005371C3 /* ADTabBar.m */,
+				847C199C2488B7ED005371C3 /* ColorView.h */,
+				847C199D2488B7ED005371C3 /* ColorView.m */,
+				847C199F2488B836005371C3 /* SelectCell.h */,
+				847C19A02488B836005371C3 /* SelectCell.m */,
+				847C19A22488BAD6005371C3 /* InputView.h */,
+				847C19A32488BAD6005371C3 /* InputView.m */,
+				847C19D32488C361005371C3 /* ToolView.h */,
+				847C19D42488C361005371C3 /* ToolView.m */,
+				848EA8D72489DB6600FF74CC /* LayerTypeView.h */,
+				848EA8D82489DB6600FF74CC /* LayerTypeView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		848EA8DC2489E9F300FF74CC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				847C198424889C82005371C3 /* UndoModel.h */,
+				847C198524889C82005371C3 /* UndoModel.m */,
+				847C198724889D5F005371C3 /* LineLayerModel.h */,
+				847C198824889D5F005371C3 /* LineLayerModel.m */,
+				847C198A24889D68005371C3 /* NoteModel.h */,
+				847C198B24889D68005371C3 /* NoteModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -484,21 +528,25 @@
 				847C196E248898C8005371C3 /* NSArray+MASAdditions.m in Sources */,
 				847C19CF2488BD98005371C3 /* IQUIScrollView+Additions.m in Sources */,
 				847C194B248896D5005371C3 /* ADNoteView.m in Sources */,
-				847C19A12488B836005371C3 /* ColorCell.m in Sources */,
+				847C19A12488B836005371C3 /* SelectCell.m in Sources */,
 				847C199E2488B7ED005371C3 /* ColorView.m in Sources */,
 				847C198924889D5F005371C3 /* LineLayerModel.m in Sources */,
 				847C19A42488BAD6005371C3 /* InputView.m in Sources */,
+				848EA8D92489DB6600FF74CC /* LayerTypeView.m in Sources */,
 				847C1972248898C8005371C3 /* MASViewAttribute.m in Sources */,
 				847C19CD2488BD98005371C3 /* IQNSArray+Sort.m in Sources */,
 				847C197F24889ADA005371C3 /* UIColor+ColorUtil.m in Sources */,
+				848EA8E22489EAEB00FF74CC /* ADDrawingLayer.m in Sources */,
 				847C199424889E88005371C3 /* NSString+StringUtil.m in Sources */,
 				847C199824889EEA005371C3 /* ADFeedbackManager.m in Sources */,
 				847C19C82488BD98005371C3 /* IQTitleBarButtonItem.m in Sources */,
 				847C19C62488BD98005371C3 /* IQTextView.m in Sources */,
 				847C193E2488967A005371C3 /* main.m in Sources */,
+				848EA8DF2489EA5500FF74CC /* ADDrawingGraffitiLayer.m in Sources */,
 				847C196D248898C8005371C3 /* MASLayoutConstraint.m in Sources */,
 				847C196F248898C8005371C3 /* View+MASAdditions.m in Sources */,
 				847C196B248898C8005371C3 /* MASCompositeConstraint.m in Sources */,
+				848EA8E52489EB8700FF74CC /* ADDrawingStraightLineLayer.m in Sources */,
 				847C194D248896D5005371C3 /* ADDrawingRulerLineLayer.m in Sources */,
 				847C198C24889D68005371C3 /* NoteModel.m in Sources */,
 				847C199B2488A24A005371C3 /* ADTabBar.m in Sources */,
