@@ -50,7 +50,7 @@
     [self getSelectNote:currentPoint];
     [self getSelectLayer:currentPoint];
     if (self.selectedLayer) {
-        self.drawingType = ADDrawingTypeRulerLine;
+        self.drawingType = self.selectedLayer.drawingType;
         return;
     }
     if (self.selectedNote) {
@@ -80,63 +80,15 @@
     }
     
     switch (self.drawingType) {
-//        case ADDrawingTypeGraffiti: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeStraightLine: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDottedLine: {
-//
-//            break;
-//        }
-        case ADDrawingTypeRulerLine: {
+        case ADDrawingTypeGraffiti:
+        case ADDrawingTypeStraightLine:
+        case ADDrawingTypeDottedLine:
+        case ADDrawingTypeRulerLine:
+        case ADDrawingTypeArrow:
+        case ADDrawingTypeRulerArrow: {
             [self configLayerTouchBeginWithCurrentPoint:currentPoint];
             break;
         }
-            
-//        case ADDrawingTypeArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRulerArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRightTriangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRectangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDiamond: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeTrapezoid: {
-//
-//            break;
-//        }
-//        case ADDrawingTypePentagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeHexagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeCircular: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeOval: {
-//
-//            break;
-//        }
         case ADDrawingTypeText: {
             if (!self.isColorMode) {
                 [self configTextTouchBeginWithCurrentPoint:currentPoint];
@@ -165,62 +117,15 @@
     }
     
     switch (self.drawingType) {
-//        case ADDrawingTypeGraffiti: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeStraightLine: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDottedLine: {
-//
-//            break;
-//        }
-        case ADDrawingTypeRulerLine: {
+        case ADDrawingTypeGraffiti:
+        case ADDrawingTypeStraightLine:
+        case ADDrawingTypeDottedLine:
+        case ADDrawingTypeRulerLine:
+        case ADDrawingTypeArrow:
+        case ADDrawingTypeRulerArrow: {
             [self configLayerMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
             break;
         }
-//        case ADDrawingTypeArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRulerArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRightTriangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRectangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDiamond: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeTrapezoid: {
-//
-//            break;
-//        }
-//        case ADDrawingTypePentagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeHexagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeCircular: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeOval: {
-//
-//            break;
-//        }
         case ADDrawingTypeText: {
             [self configTextMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
             break;
@@ -241,65 +146,18 @@
     }
     
     switch (self.drawingType) {
-//        case ADDrawingTypeGraffiti: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeStraightLine: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDottedLine: {
-//
-//            break;
-//        }
-        case ADDrawingTypeRulerLine: {
+        case ADDrawingTypeGraffiti:
+        case ADDrawingTypeStraightLine:
+        case ADDrawingTypeDottedLine:
+        case ADDrawingTypeRulerLine:
+        case ADDrawingTypeArrow:
+        case ADDrawingTypeRulerArrow: {
             if (CGPointEqualToPoint(currentPoint, previousPoint)) {
                 return;
             }
             [self configLayerTouchEnd];
             break;
         }
-//        case ADDrawingTypeArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRulerArrow: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRightTriangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeRectangle: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeDiamond: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeTrapezoid: {
-//
-//            break;
-//        }
-//        case ADDrawingTypePentagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeHexagon: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeCircular: {
-//
-//            break;
-//        }
-//        case ADDrawingTypeOval: {
-//
-//            break;
-//        }
         case ADDrawingTypeText: {
             [self configTextTouchEnd];
             break;
@@ -338,7 +196,7 @@
     
     //若最小值小于20, 则根据最小值下标，取出layer，否则layer为nil
     if (minDistance <= 20) {
-        for (int i = 0; i < self.layerArray.count; i ++) {
+        for (NSInteger i = 0; i < self.layerArray.count; i ++) {
             ADDrawingLayer *layer = self.layerArray[i];
             if (i == minIndex) {
                 layer.isEditable = YES;
@@ -604,7 +462,7 @@
     
     //添加drawLayer
     for (LineLayerModel *layerModel in undoModel.layerArray) {
-        ADDrawingLayer *drawingLayer = [[ADDrawingLayer alloc] initWithStartPoint:CGPointFromString(layerModel.startPointString)];
+        ADDrawingLayer *drawingLayer = [ADDrawingLayer createLayerWithStartPoint:CGPointFromString(layerModel.startPointString) type:self.drawingType];
         drawingLayer.layerModel = layerModel;
         [self.layer addSublayer:drawingLayer];
         [self.layerArray addObject:drawingLayer];

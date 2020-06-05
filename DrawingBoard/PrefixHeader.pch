@@ -20,4 +20,6 @@
 #import "NSString+StringUtil.h"
 #import "ADFeedbackManager.h"
 
+#import "ADDrawingLayer.h"
+
 #endif /* PrefixHeader_pch */

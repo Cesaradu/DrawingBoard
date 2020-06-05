@@ -17,7 +17,7 @@
 - (instancetype)initWithLayerArray:(NSMutableArray *)layerArray andNoteArray:(NSMutableArray *)noteArray {
     if (self = [super init]) {
         //layer数组
-        for (ADDrawingRulerLineLayer *drawingLayer in layerArray) {
+        for (ADDrawingLayer *drawingLayer in layerArray) {
             LineLayerModel *model = [self createLayerModel:drawingLayer];
             [self.layerArray addObject:model];
         }
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (LineLayerModel *)createLayerModel:(ADDrawingRulerLineLayer *)drawingLayer {
+- (LineLayerModel *)createLayerModel:(ADDrawingLayer *)drawingLayer {
     LineLayerModel *model = [[LineLayerModel alloc] init];
     model.layerId = drawingLayer.index;
     model.startPointString = NSStringFromCGPoint(drawingLayer.startPoint);

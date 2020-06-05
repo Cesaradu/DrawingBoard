@@ -1,21 +1,23 @@
 //
-//  ADDrawingStraightLineLayer.m
+//  ADDrawingArrowLayer.m
 //  DrawingBoard
 //
 //  Created by admin on 2020/6/5.
 //  Copyright © 2020 Adu. All rights reserved.
 //
 
-#import "ADDrawingStraightLineLayer.h"
+#import "ADDrawingArrowLayer.h"
 
-@implementation ADDrawingStraightLineLayer
+@implementation ADDrawingArrowLayer
 
-//画直线
+//单箭头
 - (void)configPath {
     [super configPath];
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:self.startPoint];
     [path addLineToPoint:self.endPoint];
+    [path appendPath:[self createArrowWithStartPoint:self.startPoint endPoint:self.endPoint]];
+    self.fillColor = self.lineColor.CGColor;
     self.path = path.CGPath;
 }
 

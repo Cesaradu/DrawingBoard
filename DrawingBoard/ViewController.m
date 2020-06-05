@@ -28,7 +28,7 @@
 @property (nonatomic, strong) ADNoteView *selectedNoteView;
 @property (nonatomic, strong) ADDrawingLayer *selectedLayer;
 
-@property (nonatomic, assign) ADDrawingType currentDrawingType;
+@property (nonatomic, assign) ADDrawingType drawingType;
 
 @end
 
@@ -177,20 +177,18 @@
         return;
     }
     switch (drawingType) {
-        case ADDrawingTypeRulerLine: {
+        case ADDrawingTypeText: {
+            self.tabBar.index = 1;
+        }
+            break;
+
+        default: {
+            //除了text，其余都是2
             self.tabBar.index = 2;
             if (self.inputView) {
                 [self hideInputView:NO];
             }
         }
-            break;
-            
-        case ADDrawingTypeText: {
-            self.tabBar.index = 1;
-        }
-            break;
-            
-        default:
             break;
     }
     _oldIndex = self.tabBar.index;
@@ -230,7 +228,7 @@
             if (_oldIndex == 2) {
                 [self showTypeView];
             }
-            self.drawingBoard.drawingType = self.currentDrawingType;
+            self.drawingBoard.drawingType = self.drawingType;
             self.drawingBoard.isColorMode = NO;
             _oldIndex = self.tabBar.index;
             break;
@@ -341,8 +339,8 @@
         _typeView = [[LayerTypeView alloc] initWithFrame:CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR, ScreenWidth, 60)];
         WeakSelf(self);
         _typeView.selectBlock = ^(NSDictionary * _Nonnull dict) {
-            weakSelf.currentDrawingType = (ADDrawingType)[dict[@"type"] integerValue];
-            weakSelf.drawingBoard.drawingType = weakSelf.currentDrawingType;
+            weakSelf.drawingType = (ADDrawingType)[dict[@"type"] integerValue];
+            weakSelf.drawingBoard.drawingType = weakSelf.drawingType;
             weakSelf.typeView.selectIndexPath = [NSIndexPath indexPathForRow:[dict[@"type"] integerValue] inSection:0];
             [weakSelf hideTypeView];
         };

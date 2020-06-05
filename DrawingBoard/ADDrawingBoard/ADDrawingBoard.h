@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ADDrawingLayer.h"
 #import "ADNoteView.h"
 
 NS_ASSUME_NONNULL_BEGIN

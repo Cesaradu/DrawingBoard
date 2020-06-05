@@ -45,11 +45,12 @@ typedef NS_ENUM(NSInteger, ADDrawingType) {
 
 + (instancetype)createLayerWithStartPoint:(CGPoint)startPoint type:(ADDrawingType)type;
 
-- (instancetype)initWithStartPoint:(CGPoint)startPoint;
 - (void)movePathWithStartPoint:(CGPoint)startPoint;
 - (void)movePathWithEndPoint:(CGPoint)endPoint;
 - (void)movePathWithCurrentPoint:(CGPoint)currentPoint andPreviousPoint:(CGPoint)previousPoint;
 - (void)movePathFromStartPoint:(CGPoint)startPoint toEndPoint:(CGPoint)endPoint;
+- (UIBezierPath *)createArrowWithStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint;
+- (void)configPath;
 
 - (CGFloat)angleWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint;
 - (CGFloat)angleEndWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint;

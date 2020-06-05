@@ -57,6 +57,10 @@
 		848EA8DF2489EA5500FF74CC /* ADDrawingGraffitiLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8DE2489EA5500FF74CC /* ADDrawingGraffitiLayer.m */; };
 		848EA8E22489EAEB00FF74CC /* ADDrawingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */; };
 		848EA8E52489EB8700FF74CC /* ADDrawingStraightLineLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */; };
+		848EA8E8248A12D000FF74CC /* ADDrawingDottedLineLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E7248A12D000FF74CC /* ADDrawingDottedLineLayer.m */; };
+		848EA8EB248A1F9D00FF74CC /* ADDrawingArrowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */; };
+		848EA8EE248A254500FF74CC /* ADDrawingRulerArrowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */; };
+		848EA8F1248A268400FF74CC /* ADDrawingRightTriangleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -167,6 +171,14 @@
 		848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingLayer.m; sourceTree = "<group>"; };
 		848EA8E32489EB8700FF74CC /* ADDrawingStraightLineLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingStraightLineLayer.h; sourceTree = "<group>"; };
 		848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingStraightLineLayer.m; sourceTree = "<group>"; };
+		848EA8E6248A12D000FF74CC /* ADDrawingDottedLineLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingDottedLineLayer.h; sourceTree = "<group>"; };
+		848EA8E7248A12D000FF74CC /* ADDrawingDottedLineLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingDottedLineLayer.m; sourceTree = "<group>"; };
+		848EA8E9248A1F9D00FF74CC /* ADDrawingArrowLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingArrowLayer.h; sourceTree = "<group>"; };
+		848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingArrowLayer.m; sourceTree = "<group>"; };
+		848EA8EC248A254500FF74CC /* ADDrawingRulerArrowLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingRulerArrowLayer.h; sourceTree = "<group>"; };
+		848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingRulerArrowLayer.m; sourceTree = "<group>"; };
+		848EA8EF248A268400FF74CC /* ADDrawingRightTriangleLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingRightTriangleLayer.h; sourceTree = "<group>"; };
+		848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingRightTriangleLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -402,12 +414,20 @@
 			children = (
 				848EA8E02489EAEB00FF74CC /* ADDrawingLayer.h */,
 				848EA8E12489EAEB00FF74CC /* ADDrawingLayer.m */,
-				847C1948248896D5005371C3 /* ADDrawingRulerLineLayer.h */,
-				847C1947248896D5005371C3 /* ADDrawingRulerLineLayer.m */,
 				848EA8DD2489EA5500FF74CC /* ADDrawingGraffitiLayer.h */,
 				848EA8DE2489EA5500FF74CC /* ADDrawingGraffitiLayer.m */,
 				848EA8E32489EB8700FF74CC /* ADDrawingStraightLineLayer.h */,
 				848EA8E42489EB8700FF74CC /* ADDrawingStraightLineLayer.m */,
+				848EA8E6248A12D000FF74CC /* ADDrawingDottedLineLayer.h */,
+				848EA8E7248A12D000FF74CC /* ADDrawingDottedLineLayer.m */,
+				847C1948248896D5005371C3 /* ADDrawingRulerLineLayer.h */,
+				847C1947248896D5005371C3 /* ADDrawingRulerLineLayer.m */,
+				848EA8E9248A1F9D00FF74CC /* ADDrawingArrowLayer.h */,
+				848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */,
+				848EA8EC248A254500FF74CC /* ADDrawingRulerArrowLayer.h */,
+				848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */,
+				848EA8EF248A268400FF74CC /* ADDrawingRightTriangleLayer.h */,
+				848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */,
 			);
 			path = Layers;
 			sourceTree = "<group>";
@@ -540,6 +560,7 @@
 				847C199424889E88005371C3 /* NSString+StringUtil.m in Sources */,
 				847C199824889EEA005371C3 /* ADFeedbackManager.m in Sources */,
 				847C19C82488BD98005371C3 /* IQTitleBarButtonItem.m in Sources */,
+				848EA8EB248A1F9D00FF74CC /* ADDrawingArrowLayer.m in Sources */,
 				847C19C62488BD98005371C3 /* IQTextView.m in Sources */,
 				847C193E2488967A005371C3 /* main.m in Sources */,
 				848EA8DF2489EA5500FF74CC /* ADDrawingGraffitiLayer.m in Sources */,
@@ -548,7 +569,9 @@
 				847C196B248898C8005371C3 /* MASCompositeConstraint.m in Sources */,
 				848EA8E52489EB8700FF74CC /* ADDrawingStraightLineLayer.m in Sources */,
 				847C194D248896D5005371C3 /* ADDrawingRulerLineLayer.m in Sources */,
+				848EA8F1248A268400FF74CC /* ADDrawingRightTriangleLayer.m in Sources */,
 				847C198C24889D68005371C3 /* NoteModel.m in Sources */,
+				848EA8EE248A254500FF74CC /* ADDrawingRulerArrowLayer.m in Sources */,
 				847C199B2488A24A005371C3 /* ADTabBar.m in Sources */,
 				847C196A248898C8005371C3 /* ViewController+MASAdditions.m in Sources */,
 				847C194C248896D5005371C3 /* ADDrawingBoard.m in Sources */,
@@ -563,6 +586,7 @@
 				847C19D52488C361005371C3 /* ToolView.m in Sources */,
 				847C19CB2488BD98005371C3 /* IQPreviousNextView.m in Sources */,
 				847C19C72488BD98005371C3 /* IQToolbar.m in Sources */,
+				848EA8E8248A12D000FF74CC /* ADDrawingDottedLineLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

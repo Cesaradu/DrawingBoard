@@ -11,24 +11,22 @@
 @implementation ADDrawingGraffitiLayer
 
 - (instancetype)initWithStartPoint:(CGPoint)startPoint {
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
+        self.startPoint = startPoint;
         [self.pointArray addObject:[NSValue valueWithCGPoint:startPoint]];
         self.path = [UIBezierPath bezierPath].CGPath;
     }
     return self;
 }
 
-- (void)movePathWithEndPoint:(CGPoint)endPoint {
-    self.endPoint = endPoint;
-    self.startPoint = ((NSValue*)self.pointArray.lastObject).CGPointValue;
-    
+- (void)configPath {
+    [super configPath];
+    self.startPoint = ((NSValue *)self.pointArray.lastObject).CGPointValue;
     UIBezierPath *path = [UIBezierPath bezierPathWithCGPath:self.path];
     [path moveToPoint:((NSValue *)self.pointArray.lastObject).CGPointValue];
-    [path addLineToPoint:endPoint];
+    [path addLineToPoint:self.endPoint];
     self.path = path.CGPath;
-    
-    [self.pointArray addObject:[NSValue valueWithCGPoint:endPoint]];
+    [self.pointArray addObject:[NSValue valueWithCGPoint:self.endPoint]];
 }
 
 @end

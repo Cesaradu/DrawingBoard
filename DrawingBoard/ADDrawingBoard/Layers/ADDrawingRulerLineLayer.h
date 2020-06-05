@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADDrawingRulerLineLayer : ADDrawingLayer
 
-
-    
 @end
 
 NS_ASSUME_NONNULL_END

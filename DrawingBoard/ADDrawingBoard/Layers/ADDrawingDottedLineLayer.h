@@ -1,5 +1,5 @@
 //
-//  ADDrawingGraffitiLayer.h
+//  ADDrawingDottedLineLayer.h
 //  DrawingBoard
 //
 //  Created by admin on 2020/6/5.
@@ -10,9 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ADDrawingGraffitiLayer : ADDrawingLayer
-
-- (instancetype)initWithStartPoint:(CGPoint)startPoint;
+@interface ADDrawingDottedLineLayer : ADDrawingLayer
 
 @end
 

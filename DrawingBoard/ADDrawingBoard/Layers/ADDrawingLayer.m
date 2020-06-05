@@ -10,6 +10,17 @@
 #import "ADDrawingGraffitiLayer.h"
 #import "ADDrawingStraightLineLayer.h"
 #import "ADDrawingRulerLineLayer.h"
+#import "ADDrawingDottedLineLayer.h"
+#import "ADDrawingArrowLayer.h"
+#import "ADDrawingRulerArrowLayer.h"
+#import "ADDrawingRightTriangleLayer.h"
+
+@interface ADDrawingLayer ()
+
+@property (nonatomic, strong) CAShapeLayer *startRoundLayer;
+@property (nonatomic, strong) CAShapeLayer *endRoundLayer;
+
+@end
 
 @implementation ADDrawingLayer
 
@@ -35,27 +46,27 @@
             break;
         }
         case ADDrawingTypeStraightLine: {
-            
+            layer = [[ADDrawingStraightLineLayer alloc] init];
             break;
         }
         case ADDrawingTypeDottedLine: {
-            
+            layer = [[ADDrawingDottedLineLayer alloc] init];
             break;
         }
         case ADDrawingTypeRulerLine: {
-            layer = [[ADDrawingRulerLineLayer alloc] initWithStartPoint:startPoint];
+            layer = [[ADDrawingRulerLineLayer alloc] init];
             break;
         }
         case ADDrawingTypeArrow: {
-            
+            layer = [[ADDrawingArrowLayer alloc] init];
             break;
         }
         case ADDrawingTypeRulerArrow: {
-            
+            layer = [[ADDrawingRulerArrowLayer alloc] init];
             break;
         }
         case ADDrawingTypeRightTriangle: {
-            
+            layer = [[ADDrawingRightTriangleLayer alloc] init];
             break;
         }
         case ADDrawingTypeRectangle: {
@@ -91,19 +102,118 @@
             break;
         }
     }
+    layer.startPoint = startPoint;
+    layer.drawingType = type;
     return layer;
 }
 
 - (void)movePathWithEndPoint:(CGPoint)endPoint {
-    
+    self.endPoint = endPoint;
+    self.centerPoint = CGPointMake((self.startPoint.x+self.endPoint.x)/2, (self.startPoint.y+self.endPoint.y)/2);
+    [self configPath];
 }
 
 - (void)movePathWithStartPoint:(CGPoint)startPoint {
-    
+    self.startPoint = startPoint;
+    self.centerPoint = CGPointMake((self.startPoint.x+self.endPoint.x)/2, (self.startPoint.y+self.endPoint.y)/2);
+    [self configPath];
 }
 
+- (void)movePathFromStartPoint:(CGPoint)startPoint toEndPoint:(CGPoint)endPoint {
+    self.startPoint = startPoint;
+    self.endPoint = endPoint;
+    self.centerPoint = CGPointMake((self.startPoint.x+self.endPoint.x)/2, (self.startPoint.y+self.endPoint.y)/2);
+    [self configPath];
+}
+
+- (void)movePathWithCurrentPoint:(CGPoint)currentPoint andPreviousPoint:(CGPoint)previousPoint {
+    CGFloat moveX = currentPoint.x - previousPoint.x;
+    CGFloat moveY = currentPoint.y - previousPoint.y;
+    
+    //新的起点终点坐标
+    self.startPoint = CGPointMake(self.startPoint.x + moveX, self.startPoint.y + moveY);
+    self.endPoint = CGPointMake(self.endPoint.x + moveX, self.endPoint.y + moveY);
+    self.centerPoint = CGPointMake((self.startPoint.x+self.endPoint.x)/2, (self.startPoint.y+self.endPoint.y)/2);
+    [self configPath];
+}
+
+- (void)configPath {
+    self.startRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.startPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+    self.endRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.endPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+}
+
+- (CGFloat)angleWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint {
+    CGFloat dx = secondPoint.x - firstPoint.x;
+    CGFloat dy = secondPoint.y - firstPoint.y;
+    CGFloat angle = atan2f(dy, dx);
+    return angle;
+}
+
+- (CGFloat)angleEndWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint {
+    CGFloat dx = secondPoint.x - firstPoint.x;
+    CGFloat dy = secondPoint.y - firstPoint.y;
+    CGFloat angle = atan2f(fabs(dy), fabs(dx));
+    if (dx * dy > 0) {
+        return M_PI-angle;
+    }
+    return angle;
+}
+
+#pragma mark - 箭头
+- (UIBezierPath *)createArrowWithStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint {
+    CGPoint controllPoint = CGPointZero;
+    CGPoint pointUp = CGPointZero;
+    CGPoint pointDown = CGPointZero;
+    CGFloat distance = [self distanceBetweenStartPoint:startPoint endPoint:endPoint];
+    CGFloat distanceX = 10.0 * (ABS(endPoint.x - startPoint.x) / distance);
+    CGFloat distanceY = 10.0 * (ABS(endPoint.y - startPoint.y) / distance);
+    CGFloat distX = 5.0 * (ABS(endPoint.y - startPoint.y) / distance);
+    CGFloat distY = 5.0 * (ABS(endPoint.x - startPoint.x) / distance);
+    if (endPoint.x >= startPoint.x) {
+        if (endPoint.y >= startPoint.y) {
+            controllPoint = CGPointMake(endPoint.x - distanceX, endPoint.y - distanceY);
+            pointUp = CGPointMake(controllPoint.x + distX, controllPoint.y - distY);
+            pointDown = CGPointMake(controllPoint.x - distX, controllPoint.y + distY);
+        } else {
+            controllPoint = CGPointMake(endPoint.x - distanceX, endPoint.y + distanceY);
+            pointUp = CGPointMake(controllPoint.x - distX, controllPoint.y - distY);
+            pointDown = CGPointMake(controllPoint.x + distX, controllPoint.y + distY);
+        }
+    } else {
+        if (endPoint.y >= startPoint.y) {
+            controllPoint = CGPointMake(endPoint.x + distanceX, endPoint.y - distanceY);
+            pointUp = CGPointMake(controllPoint.x - distX, controllPoint.y - distY);
+            pointDown = CGPointMake(controllPoint.x + distX, controllPoint.y + distY);
+        } else {
+            controllPoint = CGPointMake(endPoint.x + distanceX, endPoint.y + distanceY);
+            pointUp = CGPointMake(controllPoint.x + distX, controllPoint.y - distY);
+            pointDown = CGPointMake(controllPoint.x - distX, controllPoint.y + distY);
+        }
+    }
+    UIBezierPath *arrowPath = [UIBezierPath bezierPath];
+    [arrowPath moveToPoint:endPoint];
+    [arrowPath addLineToPoint:pointDown];
+    [arrowPath addLineToPoint:pointUp];
+    [arrowPath addLineToPoint:endPoint];
+    return arrowPath;
+}
+
+- (CGFloat)distanceBetweenStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint {
+    CGFloat xDist = (endPoint.x - startPoint.x);
+    CGFloat yDist = (endPoint.y - startPoint.y);
+    return sqrt((xDist * xDist) + (yDist * yDist));
+}
+
+#pragma mark - Setter
 - (void)setLineColor:(UIColor *)lineColor {
     _lineColor = lineColor;
+    self.strokeColor = lineColor.CGColor;
+    self.startRoundLayer.strokeColor = lineColor.CGColor;
+    self.endRoundLayer.strokeColor = lineColor.CGColor;
+    
+    if (self.drawingType == ADDrawingTypeArrow || self.drawingType == ADDrawingTypeRulerArrow) {
+        self.fillColor = lineColor.CGColor;
+    }
 }
 
 - (void)setLayerLineWidth:(CGFloat)layerLineWidth {
@@ -118,6 +228,63 @@
 
 - (void)setIsEditable:(BOOL)isEditable {
     _isEditable = isEditable;
+    self.startRoundLayer.strokeColor = self.lineColor.CGColor;
+    self.endRoundLayer.strokeColor = self.lineColor.CGColor;
+    if (isEditable) {
+        [self addSublayer:self.startRoundLayer];
+        [self addSublayer:self.endRoundLayer];
+    } else {
+        [self.startRoundLayer removeFromSuperlayer];
+        [self.endRoundLayer removeFromSuperlayer];
+    }
+}
+
+- (void)setCenterPoint:(CGPoint)centerPoint {
+    _centerPoint = centerPoint;
+}
+
+- (void)setLayerModel:(LineLayerModel *)layerModel {
+    _layerModel = layerModel;
+    self.index = layerModel.layerId;
+    self.startPoint = CGPointFromString(layerModel.startPointString);
+    self.endPoint = CGPointFromString(layerModel.endPointString);
+    self.lineColor = [UIColor colorWithHexString:layerModel.lineColorString];
+    [self movePathFromStartPoint:self.startPoint toEndPoint:self.endPoint];
+}
+
+- (void)setStartPoint:(CGPoint)startPoint {
+    _startPoint = startPoint;
+}
+
+- (void)setEndPoint:(CGPoint)endPoint {
+    _endPoint = endPoint;
+}
+
+#pragma mark - Lazzy
+- (CAShapeLayer *)startRoundLayer {
+    if (!_startRoundLayer) {
+        _startRoundLayer = [CAShapeLayer layer];
+        _startRoundLayer.lineJoin = kCALineJoinRound;
+        _startRoundLayer.lineCap = kCALineCapRound;
+        _startRoundLayer.strokeColor = self.lineColor.CGColor;
+        _startRoundLayer.fillColor = [UIColor clearColor].CGColor;
+        _startRoundLayer.lineWidth = 2;
+        _startRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.startPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+    }
+    return _startRoundLayer;
+}
+
+- (CAShapeLayer *)endRoundLayer {
+    if (!_endRoundLayer) {
+        _endRoundLayer = [CAShapeLayer layer];
+        _endRoundLayer.lineJoin = kCALineJoinRound;
+        _endRoundLayer.lineCap = kCALineCapRound;
+        _endRoundLayer.strokeColor = self.lineColor.CGColor;
+        _endRoundLayer.fillColor = [UIColor clearColor].CGColor;
+        _endRoundLayer.lineWidth = 2;
+        _endRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.endPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+    }
+    return _endRoundLayer;
 }
 
 @end

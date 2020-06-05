@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LineLayerModel : NSObject
 
 @property (nonatomic, assign) int layerId;
-@property (nonatomic, assign) int layerType;
+@property (nonatomic, assign) NSInteger layerType;
 @property (nonatomic, strong) NSString *startPointString;
 @property (nonatomic, strong) NSString *endPointString;
 @property (nonatomic, strong) NSString *lineColorString;
