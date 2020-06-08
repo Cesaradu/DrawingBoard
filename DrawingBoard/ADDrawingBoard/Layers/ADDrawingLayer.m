@@ -14,6 +14,13 @@
 #import "ADDrawingArrowLayer.h"
 #import "ADDrawingRulerArrowLayer.h"
 #import "ADDrawingRightTriangleLayer.h"
+#import "ADDrawingRectangleLayer.h"
+#import "ADDrawingDiamondLayer.h"
+#import "ADDrawingTrapezoidLayer.h"
+#import "ADDrawingPentagonLayer.h"
+#import "ADDrawingHexagonLayer.h"
+#import "ADDrawingCircularLayer.h"
+#import "ADDrawingOvalLayer.h"
 
 @interface ADDrawingLayer ()
 
@@ -33,7 +40,7 @@
         self.fillColor = [UIColor clearColor].CGColor;
         self.lineColor = [UIColor colorWithHexString:YellowColor];
         self.lineWidth = 2;
-        self.pointArray = [NSMutableArray array];
+        self.pointArray = [NSMutableArray new];
     }
     return self;
 }
@@ -70,37 +77,36 @@
             break;
         }
         case ADDrawingTypeRectangle: {
-            
+            layer = [[ADDrawingRectangleLayer alloc] init];
             break;
         }
         case ADDrawingTypeDiamond: {
-            
+            layer = [[ADDrawingDiamondLayer alloc] init];
             break;
         }
         case ADDrawingTypeTrapezoid: {
-            
+            layer = [[ADDrawingTrapezoidLayer alloc] init];
             break;
         }
         case ADDrawingTypePentagon: {
-            
+            layer = [[ADDrawingPentagonLayer alloc] init];
             break;
         }
         case ADDrawingTypeHexagon: {
-            
+            layer = [[ADDrawingHexagonLayer alloc] init];
             break;
         }
         case ADDrawingTypeCircular: {
-            
+            layer = [[ADDrawingCircularLayer alloc] init];
             break;
         }
         case ADDrawingTypeOval: {
-            
+            layer = [[ADDrawingOvalLayer alloc] init];
             break;
         }
-        case ADDrawingTypeText: {
-            
+        
+        default:
             break;
-        }
     }
     layer.startPoint = startPoint;
     layer.drawingType = type;
@@ -138,8 +144,63 @@
 }
 
 - (void)configPath {
-    self.startRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.startPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
-    self.endRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.endPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+    switch (self.drawingType) {
+            //自由涂鸦
+        case ADDrawingTypeGraffiti: {
+            self.startRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:((NSValue *)self.pointArray.firstObject).CGPointValue radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+            self.endRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:((NSValue *)self.pointArray.lastObject).CGPointValue radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+        }
+            break;
+            
+            //线条
+        case ADDrawingTypeStraightLine:
+        case ADDrawingTypeDottedLine:
+        case ADDrawingTypeRulerLine:
+        case ADDrawingTypeArrow:
+        case ADDrawingTypeRulerArrow: {
+            self.startRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.startPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+            self.endRoundLayer.path = [UIBezierPath bezierPathWithArcCenter:self.endPoint radius:16 startAngle:0 endAngle:M_PI * 2 clockwise:YES].CGPath;
+        }
+            break;
+            
+            //图形
+        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+}
+
+- (void)movePathWithPointArray:(NSMutableArray *)pointArray {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    for (int i = 0; i < pointArray.count; i ++) {
+        CGPoint point = ((NSValue *)pointArray[i]).CGPointValue;
+        if (i == 0) {
+            [path moveToPoint:point];
+        } else {
+            [path addLineToPoint:point];
+        }
+    }
+    self.path = path.CGPath;
+    [self configPath];
+}
+
+- (CGFloat)distanceBetweenStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint {
+    CGFloat xDist = (endPoint.x - startPoint.x);
+    CGFloat yDist = (endPoint.y - startPoint.y);
+    return sqrt((xDist * xDist) + (yDist * yDist));
 }
 
 - (CGFloat)angleWithFirstPoint:(CGPoint)firstPoint andSecondPoint:(CGPoint)secondPoint {
@@ -198,12 +259,6 @@
     return arrowPath;
 }
 
-- (CGFloat)distanceBetweenStartPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint {
-    CGFloat xDist = (endPoint.x - startPoint.x);
-    CGFloat yDist = (endPoint.y - startPoint.y);
-    return sqrt((xDist * xDist) + (yDist * yDist));
-}
-
 #pragma mark - Setter
 - (void)setLineColor:(UIColor *)lineColor {
     _lineColor = lineColor;
@@ -246,10 +301,16 @@
 - (void)setLayerModel:(LineLayerModel *)layerModel {
     _layerModel = layerModel;
     self.index = layerModel.layerId;
+    self.drawingType = layerModel.drawingType;
     self.startPoint = CGPointFromString(layerModel.startPointString);
     self.endPoint = CGPointFromString(layerModel.endPointString);
+    self.pointArray = layerModel.pointArray;
     self.lineColor = [UIColor colorWithHexString:layerModel.lineColorString];
-    [self movePathFromStartPoint:self.startPoint toEndPoint:self.endPoint];
+    if (layerModel.drawingType == ADDrawingTypeGraffiti) {
+        [self movePathWithPointArray:self.pointArray]; //自由涂鸦
+    } else {
+        [self movePathFromStartPoint:self.startPoint toEndPoint:self.endPoint];
+    }
 }
 
 - (void)setStartPoint:(CGPoint)startPoint {

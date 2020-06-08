@@ -44,6 +44,9 @@
     self.backgroundColor = [UIColor clearColor];
     self.drawingType = ADDrawingTypeRulerLine;
     self.lineColor = [UIColor colorWithHexString:YellowColor];
+    self.isMoveLine = NO;
+    self.isMoveStartPoint = NO;
+    self.isMoveEndPoint = NO;
 }
 
 - (void)judgeSelectObj:(CGPoint)currentPoint {
@@ -85,7 +88,15 @@
         case ADDrawingTypeDottedLine:
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow: {
+        case ADDrawingTypeRulerArrow:
+        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
             [self configLayerTouchBeginWithCurrentPoint:currentPoint];
             break;
         }
@@ -122,7 +133,15 @@
         case ADDrawingTypeDottedLine:
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow: {
+        case ADDrawingTypeRulerArrow:
+        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
             [self configLayerMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
             break;
         }
@@ -151,7 +170,15 @@
         case ADDrawingTypeDottedLine:
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow: {
+        case ADDrawingTypeRulerArrow:
+        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
             if (CGPointEqualToPoint(currentPoint, previousPoint)) {
                 return;
             }
@@ -179,37 +206,64 @@
 
 #pragma mark - LayerAction
 - (ADDrawingLayer *)getSelectLayer:(CGPoint)point {
-    //判断距离最小值，取出最小值以及所在下标
-    ADDrawingLayer *firstLayer = self.layerArray.firstObject;
-    double minDistance = [self calculateDistanceFromTouchPoint:point toStartPoint:firstLayer.startPoint andEndPoint:firstLayer.endPoint];
-    int minIndex = 0;
-    NSMutableArray *distanceArray = [NSMutableArray new];
+    self.selectedLayer.isEditable = NO;
+    self.selectedLayer = nil;
     for (int i = 0; i < self.layerArray.count; i ++) {
         ADDrawingLayer *layer = self.layerArray[i];
-        double distance = [self calculateDistanceFromTouchPoint:point toStartPoint:layer.startPoint andEndPoint:layer.endPoint];
-        [distanceArray addObject:[NSNumber numberWithDouble:distance]];
-        if (distance < minDistance) {
-            minIndex = i;
-        }
-        minDistance = distance > minDistance ? minDistance : distance;
-    }
-    
-    //若最小值小于20, 则根据最小值下标，取出layer，否则layer为nil
-    if (minDistance <= 20) {
-        for (NSInteger i = 0; i < self.layerArray.count; i ++) {
-            ADDrawingLayer *layer = self.layerArray[i];
-            if (i == minIndex) {
-                layer.isEditable = YES;
-                self.selectedLayer = layer;
-            } else {
-                layer.isEditable = NO;
+        switch (layer.drawingType) {
+                //自由涂鸦
+            case ADDrawingTypeGraffiti: {
+                for (int i = 0; i < layer.pointArray.count; i ++) {
+                    CGPoint p = ((NSValue *)layer.pointArray[i]).CGPointValue;
+                    double distance = [self distanceBetweenTwoPoint:p point2:point];
+                    if (distance <= 20) {
+                        layer.isEditable = YES;
+                        self.selectedLayer = layer;
+                        [ADFeedbackManager excuteSelectionFeedback];
+                        break;
+                    } else {
+                        layer.isEditable = NO;
+                    }
+                }
             }
+                break;
+                
+                //线条
+            case ADDrawingTypeStraightLine:
+            case ADDrawingTypeDottedLine:
+            case ADDrawingTypeRulerLine:
+            case ADDrawingTypeArrow:
+            case ADDrawingTypeRulerArrow: {
+                double distance = [self calculateDistanceFromTouchPoint:point toStartPoint:layer.startPoint andEndPoint:layer.endPoint];
+                if (distance <= 20) {
+                    layer.isEditable = YES;
+                    self.selectedLayer = layer;
+                    [ADFeedbackManager excuteSelectionFeedback];
+                    break;
+                } else {
+                    layer.isEditable = NO;
+                }
+            }
+                break;
+                
+            case ADDrawingTypeRightTriangle:
+            case ADDrawingTypeRectangle:
+            case ADDrawingTypeDiamond:
+            case ADDrawingTypeTrapezoid:
+            case ADDrawingTypePentagon:
+            case ADDrawingTypeHexagon:
+            case ADDrawingTypeCircular:
+            case ADDrawingTypeOval: {
+                
+            }
+                break;
+                
+            default:
+                break;
         }
-    } else {
-        self.selectedLayer.isEditable = NO;
-        self.selectedLayer = nil;
+        
     }
-    
+
     return self.selectedLayer;
 }
 
@@ -218,23 +272,56 @@
     [self getSelectLayer:currentPoint];
     
     if (self.selectedLayer) {
-        //有选中的layer, 则编辑该layer
-        double startDis = [self distanceBetweenTwoPoint:self.selectedLayer.startPoint point2:currentPoint]; //触摸点与起点的距离
-        double endDis = [self distanceBetweenTwoPoint:self.selectedLayer.endPoint point2:currentPoint]; //触摸点与终点的距离
-        if ((startDis <= 16 && endDis > 16) || (startDis <= 16 && endDis <= 16 && startDis < endDis)) {
-            //刚好触摸到起点，或者同时触摸到起点和终点，但是距离起点更近，则移动起点
-            self.isMoveStartPoint = YES;
-            self.isMoveEndPoint = NO;
-            self.isMoveLine = NO;
-        } else if ((startDis > 16 && endDis <= 16) || (startDis <= 16 && endDis <= 16 && startDis > endDis)) {
-            //刚好触摸到终点，或者同时触摸到起点和终点，但是距离终点更近，则移动终点
-            self.isMoveEndPoint = YES;
-            self.isMoveStartPoint = NO;
-            self.isMoveLine = NO;
-        } else {
-            self.isMoveLine = YES;
-            self.isMoveStartPoint = NO;
-            self.isMoveEndPoint = NO;
+        switch (self.selectedLayer.drawingType) {
+            case ADDrawingTypeGraffiti: {
+                self.isMoveLine = NO;
+                self.isMoveStartPoint = NO;
+                self.isMoveEndPoint = NO;
+            }
+                break;
+                
+                //线条
+            case ADDrawingTypeStraightLine:
+            case ADDrawingTypeDottedLine:
+            case ADDrawingTypeRulerLine:
+            case ADDrawingTypeArrow:
+            case ADDrawingTypeRulerArrow: {
+                //有选中的layer, 则编辑该layer
+                double startDis = [self distanceBetweenTwoPoint:self.selectedLayer.startPoint point2:currentPoint]; //触摸点与起点的距离
+                double endDis = [self distanceBetweenTwoPoint:self.selectedLayer.endPoint point2:currentPoint]; //触摸点与终点的距离
+                if ((startDis <= 16 && endDis > 16) || (startDis <= 16 && endDis <= 16 && startDis < endDis)) {
+                    //刚好触摸到起点，或者同时触摸到起点和终点，但是距离起点更近，则移动起点
+                    self.isMoveStartPoint = YES;
+                    self.isMoveEndPoint = NO;
+                    self.isMoveLine = NO;
+                } else if ((startDis > 16 && endDis <= 16) || (startDis <= 16 && endDis <= 16 && startDis > endDis)) {
+                    //刚好触摸到终点，或者同时触摸到起点和终点，但是距离终点更近，则移动终点
+                    self.isMoveEndPoint = YES;
+                    self.isMoveStartPoint = NO;
+                    self.isMoveLine = NO;
+                } else {
+                    self.isMoveLine = YES;
+                    self.isMoveStartPoint = NO;
+                    self.isMoveEndPoint = NO;
+                }
+            }
+                break;
+                
+                //图形
+            case ADDrawingTypeRightTriangle:
+            case ADDrawingTypeRectangle:
+            case ADDrawingTypeDiamond:
+            case ADDrawingTypeTrapezoid:
+            case ADDrawingTypePentagon:
+            case ADDrawingTypeHexagon:
+            case ADDrawingTypeCircular:
+            case ADDrawingTypeOval: {
+                
+            }
+                break;
+                
+            default:
+                break;
         }
     }
     
@@ -462,7 +549,7 @@
     
     //添加drawLayer
     for (LineLayerModel *layerModel in undoModel.layerArray) {
-        ADDrawingLayer *drawingLayer = [ADDrawingLayer createLayerWithStartPoint:CGPointFromString(layerModel.startPointString) type:self.drawingType];
+        ADDrawingLayer *drawingLayer = [ADDrawingLayer createLayerWithStartPoint:CGPointFromString(layerModel.startPointString) type:layerModel.drawingType];
         drawingLayer.layerModel = layerModel;
         [self.layer addSublayer:drawingLayer];
         [self.layerArray addObject:drawingLayer];
@@ -500,7 +587,7 @@
 
 //计算两点距离
 - (double)distanceBetweenTwoPoint:(CGPoint)point1 point2:(CGPoint)point2 {
-    return sqrtf(powf(point1.x - point2.x, 2) + powf(point1.y - point2.y, 2));
+    return sqrt(powf(point1.x - point2.x, 2) + powf(point1.y - point2.y, 2));
 }
 
 #pragma mark - Setter

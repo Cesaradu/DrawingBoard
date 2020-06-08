@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8464D1AB248E29D00029289D /* ADDrawingRectangleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1AA248E29D00029289D /* ADDrawingRectangleLayer.m */; };
+		8464D1AE248E2A920029289D /* ADDrawingDiamondLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1AD248E2A920029289D /* ADDrawingDiamondLayer.m */; };
+		8464D1B1248E2AA80029289D /* ADDrawingTrapezoidLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1B0248E2AA80029289D /* ADDrawingTrapezoidLayer.m */; };
+		8464D1B4248E2ABA0029289D /* ADDrawingPentagonLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1B3248E2ABA0029289D /* ADDrawingPentagonLayer.m */; };
+		8464D1B7248E2AC90029289D /* ADDrawingHexagonLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1B6248E2AC90029289D /* ADDrawingHexagonLayer.m */; };
+		8464D1BA248E2ADA0029289D /* ADDrawingCircularLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1B9248E2ADA0029289D /* ADDrawingCircularLayer.m */; };
+		8464D1BD248E2AEA0029289D /* ADDrawingOvalLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464D1BC248E2AEA0029289D /* ADDrawingOvalLayer.m */; };
 		847C192D24889668005371C3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C192C24889668005371C3 /* AppDelegate.m */; };
 		847C193024889668005371C3 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C192F24889668005371C3 /* SceneDelegate.m */; };
 		847C193324889668005371C3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C193224889668005371C3 /* ViewController.m */; };
@@ -64,6 +71,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8464D1A9248E29D00029289D /* ADDrawingRectangleLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingRectangleLayer.h; sourceTree = "<group>"; };
+		8464D1AA248E29D00029289D /* ADDrawingRectangleLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingRectangleLayer.m; sourceTree = "<group>"; };
+		8464D1AC248E2A920029289D /* ADDrawingDiamondLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingDiamondLayer.h; sourceTree = "<group>"; };
+		8464D1AD248E2A920029289D /* ADDrawingDiamondLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingDiamondLayer.m; sourceTree = "<group>"; };
+		8464D1AF248E2AA80029289D /* ADDrawingTrapezoidLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingTrapezoidLayer.h; sourceTree = "<group>"; };
+		8464D1B0248E2AA80029289D /* ADDrawingTrapezoidLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingTrapezoidLayer.m; sourceTree = "<group>"; };
+		8464D1B2248E2ABA0029289D /* ADDrawingPentagonLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingPentagonLayer.h; sourceTree = "<group>"; };
+		8464D1B3248E2ABA0029289D /* ADDrawingPentagonLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingPentagonLayer.m; sourceTree = "<group>"; };
+		8464D1B5248E2AC90029289D /* ADDrawingHexagonLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingHexagonLayer.h; sourceTree = "<group>"; };
+		8464D1B6248E2AC90029289D /* ADDrawingHexagonLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingHexagonLayer.m; sourceTree = "<group>"; };
+		8464D1B8248E2ADA0029289D /* ADDrawingCircularLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingCircularLayer.h; sourceTree = "<group>"; };
+		8464D1B9248E2ADA0029289D /* ADDrawingCircularLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingCircularLayer.m; sourceTree = "<group>"; };
+		8464D1BB248E2AEA0029289D /* ADDrawingOvalLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingOvalLayer.h; sourceTree = "<group>"; };
+		8464D1BC248E2AEA0029289D /* ADDrawingOvalLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingOvalLayer.m; sourceTree = "<group>"; };
 		847C192824889668005371C3 /* DrawingBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawingBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		847C192B24889668005371C3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		847C192C24889668005371C3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -428,6 +449,20 @@
 				848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */,
 				848EA8EF248A268400FF74CC /* ADDrawingRightTriangleLayer.h */,
 				848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */,
+				8464D1A9248E29D00029289D /* ADDrawingRectangleLayer.h */,
+				8464D1AA248E29D00029289D /* ADDrawingRectangleLayer.m */,
+				8464D1AC248E2A920029289D /* ADDrawingDiamondLayer.h */,
+				8464D1AD248E2A920029289D /* ADDrawingDiamondLayer.m */,
+				8464D1AF248E2AA80029289D /* ADDrawingTrapezoidLayer.h */,
+				8464D1B0248E2AA80029289D /* ADDrawingTrapezoidLayer.m */,
+				8464D1B2248E2ABA0029289D /* ADDrawingPentagonLayer.h */,
+				8464D1B3248E2ABA0029289D /* ADDrawingPentagonLayer.m */,
+				8464D1B5248E2AC90029289D /* ADDrawingHexagonLayer.h */,
+				8464D1B6248E2AC90029289D /* ADDrawingHexagonLayer.m */,
+				8464D1B8248E2ADA0029289D /* ADDrawingCircularLayer.h */,
+				8464D1B9248E2ADA0029289D /* ADDrawingCircularLayer.m */,
+				8464D1BB248E2AEA0029289D /* ADDrawingOvalLayer.h */,
+				8464D1BC248E2AEA0029289D /* ADDrawingOvalLayer.m */,
 			);
 			path = Layers;
 			sourceTree = "<group>";
@@ -538,7 +573,10 @@
 			files = (
 				847C19CE2488BD98005371C3 /* IQUITextFieldView+Additions.m in Sources */,
 				847C19D22488BD98005371C3 /* IQKeyboardReturnKeyHandler.m in Sources */,
+				8464D1B7248E2AC90029289D /* ADDrawingHexagonLayer.m in Sources */,
+				8464D1B4248E2ABA0029289D /* ADDrawingPentagonLayer.m in Sources */,
 				847C19D12488BD98005371C3 /* IQUIViewController+Additions.m in Sources */,
+				8464D1AB248E29D00029289D /* ADDrawingRectangleLayer.m in Sources */,
 				847C19CC2488BD98005371C3 /* IQKeyboardManager.m in Sources */,
 				847C193324889668005371C3 /* ViewController.m in Sources */,
 				847C198624889C82005371C3 /* UndoModel.m in Sources */,
@@ -563,7 +601,9 @@
 				848EA8EB248A1F9D00FF74CC /* ADDrawingArrowLayer.m in Sources */,
 				847C19C62488BD98005371C3 /* IQTextView.m in Sources */,
 				847C193E2488967A005371C3 /* main.m in Sources */,
+				8464D1AE248E2A920029289D /* ADDrawingDiamondLayer.m in Sources */,
 				848EA8DF2489EA5500FF74CC /* ADDrawingGraffitiLayer.m in Sources */,
+				8464D1BA248E2ADA0029289D /* ADDrawingCircularLayer.m in Sources */,
 				847C196D248898C8005371C3 /* MASLayoutConstraint.m in Sources */,
 				847C196F248898C8005371C3 /* View+MASAdditions.m in Sources */,
 				847C196B248898C8005371C3 /* MASCompositeConstraint.m in Sources */,
@@ -586,6 +626,8 @@
 				847C19D52488C361005371C3 /* ToolView.m in Sources */,
 				847C19CB2488BD98005371C3 /* IQPreviousNextView.m in Sources */,
 				847C19C72488BD98005371C3 /* IQToolbar.m in Sources */,
+				8464D1BD248E2AEA0029289D /* ADDrawingOvalLayer.m in Sources */,
+				8464D1B1248E2AA80029289D /* ADDrawingTrapezoidLayer.m in Sources */,
 				848EA8E8248A12D000FF74CC /* ADDrawingDottedLineLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

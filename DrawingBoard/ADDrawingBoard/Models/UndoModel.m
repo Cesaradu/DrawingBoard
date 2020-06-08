@@ -33,8 +33,10 @@
 - (LineLayerModel *)createLayerModel:(ADDrawingLayer *)drawingLayer {
     LineLayerModel *model = [[LineLayerModel alloc] init];
     model.layerId = drawingLayer.index;
+    model.drawingType = drawingLayer.drawingType;
     model.startPointString = NSStringFromCGPoint(drawingLayer.startPoint);
     model.endPointString = NSStringFromCGPoint(drawingLayer.endPoint);
+    model.pointArray = drawingLayer.pointArray;
     model.lineColorString = [UIColor hexStringWithColor:drawingLayer.lineColor];
     return model;
 }

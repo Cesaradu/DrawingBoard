@@ -27,4 +27,11 @@
     return self;
 }
 
+- (NSMutableArray *)pointArray {
+    if (!_pointArray) {
+        _pointArray = [NSMutableArray new];
+    }
+    return _pointArray;
+}
+
 @end
