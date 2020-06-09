@@ -23,30 +23,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADDrawingBoard : UIView
 
-//@property (nonatomic, strong) ProjectModel *projectModel;
 @property (nonatomic, weak) id <ADDrawingBoardDelegate> delegate;
 @property (nonatomic, assign) ADDrawingType drawingType;
 @property (nonatomic, assign) BOOL isEntering;
 @property (nonatomic, assign) BOOL isColorMode; //是否处在选颜色模式
 @property (nonatomic, strong) UIColor *lineColor; //画笔颜色
 @property (nonatomic, strong) UIImage *bgImage; //背景图
-@property (nonatomic, strong) NSMutableArray *layerArray;
-@property (nonatomic, strong) NSMutableArray *noteArray;
-@property (nonatomic, strong) NSMutableArray *previousLayerArray;
-@property (nonatomic, strong) NSMutableArray *previousNoteArray;
+@property (nonatomic, strong) NSMutableArray *layerArray; //所有的layer
+@property (nonatomic, strong) NSMutableArray *noteArray; //所有的note
+@property (nonatomic, strong) NSMutableArray *undoArray; //后退操作数组
+@property (nonatomic, strong) NSMutableArray *redoArray; //前进操作数组
 
-@property (nonatomic, strong) NSMutableArray *undoArray;
-@property (nonatomic, strong) NSMutableArray *redoArray;
-
+//添加可后退操作
 - (void)addUndoSteps;
 
-//撤回一步操作
+//后退一步操作
 - (void)undoAction;
 
 //前进一步操作
 - (void)redoAction;
 
+//删除当前note
 - (void)removeCurrentNoteView:(ADNoteView *)noteView;
+
+//删除当前layer
 - (void)removeCurrentLayer:(ADDrawingLayer *)drawingLayer;
 
 //刷新noteArray中noteView的序号

@@ -659,25 +659,11 @@
     return _layerArray;
 }
 
-- (NSMutableArray *)previousLayerArray {
-    if (!_previousLayerArray) {
-        _previousLayerArray = [NSMutableArray new];
-    }
-    return _previousLayerArray;
-}
-
 - (NSMutableArray *)noteArray {
     if (!_noteArray) {
         _noteArray = [NSMutableArray new];
     }
     return _noteArray;
-}
-
-- (NSMutableArray *)previousNoteArray {
-    if (!_previousNoteArray) {
-        _previousNoteArray = [NSMutableArray new];
-    }
-    return _previousNoteArray;
 }
 
 - (NSMutableArray *)undoArray {
