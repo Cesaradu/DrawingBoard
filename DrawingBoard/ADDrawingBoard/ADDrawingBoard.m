@@ -280,6 +280,8 @@
     
     if (self.selectedLayer) {
         switch (self.selectedLayer.drawingType) {
+                
+                //自由涂鸦
             case ADDrawingTypeGraffiti: {
                 self.isMoveLayer = NO;
                 self.isMoveStartPoint = NO;
@@ -326,12 +328,18 @@
                 self.isMoveLayer = YES;
                 self.isMoveStartPoint = NO;
                 self.isMoveEndPoint = NO;
+                
+                //添加捏合手势
+                UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
+                [self addGestureRecognizer:pinch];
             }
                 break;
                 
             default:
                 break;
         }
+    } else {
+        
     }
     
     //传递选中、取消选中事件
@@ -339,6 +347,18 @@
         [self.delegate didSelectDrawingLayer:self.selectedLayer];
     }
     self.isTouch = YES;
+}
+
+- (void)pinchAction:(UIPinchGestureRecognizer *)recognizer {
+    CGFloat scale = recognizer.scale;
+    CGPoint startPoint = self.selectedLayer.startPoint;
+    startPoint = CGPointMake(startPoint.x / scale, startPoint.y / scale);
+    self.selectedLayer.startPoint = startPoint;
+    CGPoint endPoint = self.selectedLayer.endPoint;
+    endPoint = CGPointMake(endPoint.x * scale, endPoint.y * scale);
+    self.selectedLayer.endPoint = endPoint;
+    [self.selectedLayer configPath];
+    recognizer.scale = 1.0;
 }
 
 - (void)configLayerMoveWithCurrentPoint:(CGPoint)currentPoint andPreviousPoint:(CGPoint)previousPoint {
