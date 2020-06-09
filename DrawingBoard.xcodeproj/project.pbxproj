@@ -67,7 +67,7 @@
 		848EA8E8248A12D000FF74CC /* ADDrawingDottedLineLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8E7248A12D000FF74CC /* ADDrawingDottedLineLayer.m */; };
 		848EA8EB248A1F9D00FF74CC /* ADDrawingArrowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */; };
 		848EA8EE248A254500FF74CC /* ADDrawingRulerArrowLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */; };
-		848EA8F1248A268400FF74CC /* ADDrawingRightTriangleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */; };
+		848EA8F1248A268400FF74CC /* ADDrawingTriangleLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 848EA8F0248A268400FF74CC /* ADDrawingTriangleLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -198,8 +198,8 @@
 		848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingArrowLayer.m; sourceTree = "<group>"; };
 		848EA8EC248A254500FF74CC /* ADDrawingRulerArrowLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingRulerArrowLayer.h; sourceTree = "<group>"; };
 		848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingRulerArrowLayer.m; sourceTree = "<group>"; };
-		848EA8EF248A268400FF74CC /* ADDrawingRightTriangleLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingRightTriangleLayer.h; sourceTree = "<group>"; };
-		848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingRightTriangleLayer.m; sourceTree = "<group>"; };
+		848EA8EF248A268400FF74CC /* ADDrawingTriangleLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADDrawingTriangleLayer.h; sourceTree = "<group>"; };
+		848EA8F0248A268400FF74CC /* ADDrawingTriangleLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADDrawingTriangleLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,8 +447,8 @@
 				848EA8EA248A1F9D00FF74CC /* ADDrawingArrowLayer.m */,
 				848EA8EC248A254500FF74CC /* ADDrawingRulerArrowLayer.h */,
 				848EA8ED248A254500FF74CC /* ADDrawingRulerArrowLayer.m */,
-				848EA8EF248A268400FF74CC /* ADDrawingRightTriangleLayer.h */,
-				848EA8F0248A268400FF74CC /* ADDrawingRightTriangleLayer.m */,
+				848EA8EF248A268400FF74CC /* ADDrawingTriangleLayer.h */,
+				848EA8F0248A268400FF74CC /* ADDrawingTriangleLayer.m */,
 				8464D1A9248E29D00029289D /* ADDrawingRectangleLayer.h */,
 				8464D1AA248E29D00029289D /* ADDrawingRectangleLayer.m */,
 				8464D1AC248E2A920029289D /* ADDrawingDiamondLayer.h */,
@@ -609,7 +609,7 @@
 				847C196B248898C8005371C3 /* MASCompositeConstraint.m in Sources */,
 				848EA8E52489EB8700FF74CC /* ADDrawingStraightLineLayer.m in Sources */,
 				847C194D248896D5005371C3 /* ADDrawingRulerLineLayer.m in Sources */,
-				848EA8F1248A268400FF74CC /* ADDrawingRightTriangleLayer.m in Sources */,
+				848EA8F1248A268400FF74CC /* ADDrawingTriangleLayer.m in Sources */,
 				847C198C24889D68005371C3 /* NoteModel.m in Sources */,
 				848EA8EE248A254500FF74CC /* ADDrawingRulerArrowLayer.m in Sources */,
 				847C199B2488A24A005371C3 /* ADTabBar.m in Sources */,

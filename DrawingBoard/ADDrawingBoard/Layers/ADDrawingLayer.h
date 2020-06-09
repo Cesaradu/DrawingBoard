@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, ADDrawingType) {
     ADDrawingTypeRulerLine = 3, //线段
     ADDrawingTypeArrow = 4, //箭头
     ADDrawingTypeRulerArrow = 5, //双箭头
-    ADDrawingTypeRightTriangle = 6, //直角三角形
+    ADDrawingTypeTriangle = 6, //正三角形
     ADDrawingTypeRectangle = 7, //矩形
     ADDrawingTypeDiamond = 8, //菱形
     ADDrawingTypeTrapezoid = 9, //梯形
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, ADDrawingType) {
 @property (nonatomic, strong) NSMutableArray *pointArray;         //记录图形绘制点
 @property (nonatomic, strong) UIColor *lineColor;                //画笔颜色（默认黑色）
 @property (nonatomic, assign) CGFloat layerLineWidth;            //线宽（1~20,默认2）
-@property (nonatomic, assign) BOOL isEditable;                   //是否可编辑
+@property (nonatomic, assign) BOOL isSelected;                   //是否选中
 
 @property (nonatomic, strong) LineLayerModel *layerModel;
 

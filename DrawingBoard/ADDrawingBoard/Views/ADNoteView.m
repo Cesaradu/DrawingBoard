@@ -125,9 +125,9 @@
     return size.width;
 }
 
-- (void)setIsEditable:(BOOL)isEditable {
-    _isEditable = isEditable;
-    if (isEditable) {
+- (void)setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
+    if (isSelected) {
         self.indexBtn.backgroundColor = [UIColor colorWithHexString:MainColor];
         [self.indexBtn setTitleColor:[UIColor colorWithHexString:BGLightColor] forState:UIControlStateNormal];
     } else {

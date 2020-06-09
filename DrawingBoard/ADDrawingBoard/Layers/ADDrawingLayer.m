@@ -13,7 +13,7 @@
 #import "ADDrawingDottedLineLayer.h"
 #import "ADDrawingArrowLayer.h"
 #import "ADDrawingRulerArrowLayer.h"
-#import "ADDrawingRightTriangleLayer.h"
+#import "ADDrawingTriangleLayer.h"
 #import "ADDrawingRectangleLayer.h"
 #import "ADDrawingDiamondLayer.h"
 #import "ADDrawingTrapezoidLayer.h"
@@ -72,8 +72,8 @@
             layer = [[ADDrawingRulerArrowLayer alloc] init];
             break;
         }
-        case ADDrawingTypeRightTriangle: {
-            layer = [[ADDrawingRightTriangleLayer alloc] init];
+        case ADDrawingTypeTriangle: {
+            layer = [[ADDrawingTriangleLayer alloc] init];
             break;
         }
         case ADDrawingTypeRectangle: {
@@ -164,7 +164,7 @@
             break;
             
             //图形
-        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeTriangle:
         case ADDrawingTypeRectangle:
         case ADDrawingTypeDiamond:
         case ADDrawingTypeTrapezoid:
@@ -269,6 +269,30 @@
     if (self.drawingType == ADDrawingTypeArrow || self.drawingType == ADDrawingTypeRulerArrow) {
         self.fillColor = lineColor.CGColor;
     }
+    
+    switch (self.drawingType) {
+        case ADDrawingTypeArrow:
+        case ADDrawingTypeRulerArrow: {
+            self.fillColor = lineColor.CGColor;
+        }
+            break;
+            
+        case ADDrawingTypeTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
+            if (self.isSelected) {
+                self.fillColor = [UIColor colorWithHexString:[UIColor hexStringWithColor:self.lineColor] alpha:0.2].CGColor;
+            }
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)setLayerLineWidth:(CGFloat)layerLineWidth {
@@ -281,16 +305,47 @@
     self.lineWidth = layerLineWidth;
 }
 
-- (void)setIsEditable:(BOOL)isEditable {
-    _isEditable = isEditable;
-    self.startRoundLayer.strokeColor = self.lineColor.CGColor;
-    self.endRoundLayer.strokeColor = self.lineColor.CGColor;
-    if (isEditable) {
-        [self addSublayer:self.startRoundLayer];
-        [self addSublayer:self.endRoundLayer];
-    } else {
-        [self.startRoundLayer removeFromSuperlayer];
-        [self.endRoundLayer removeFromSuperlayer];
+- (void)setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
+    switch (self.drawingType) {
+            //图形
+        case ADDrawingTypeTriangle:
+        case ADDrawingTypeRectangle:
+        case ADDrawingTypeDiamond:
+        case ADDrawingTypeTrapezoid:
+        case ADDrawingTypePentagon:
+        case ADDrawingTypeHexagon:
+        case ADDrawingTypeCircular:
+        case ADDrawingTypeOval: {
+            if (isSelected) {
+                self.fillColor = [UIColor colorWithHexString:[UIColor hexStringWithColor:self.lineColor] alpha:0.2].CGColor;
+            } else {
+                self.fillColor = [UIColor clearColor].CGColor;
+            }
+        }
+            break;
+            
+            //线条
+        default: {
+            self.startRoundLayer.strokeColor = self.lineColor.CGColor;
+            self.endRoundLayer.strokeColor = self.lineColor.CGColor;
+            if (isSelected) {
+                [self addSublayer:self.startRoundLayer];
+                [self addSublayer:self.endRoundLayer];
+                self.shadowColor = [UIColor colorWithHexString:@"000000" alpha:0.4].CGColor;
+                self.shadowRadius = 4;
+                self.shadowOffset = CGSizeMake(0, 0);
+                self.shadowOpacity = 1.0;
+            } else {
+                [self.startRoundLayer removeFromSuperlayer];
+                [self.endRoundLayer removeFromSuperlayer];
+                self.shadowColor = nil;
+                self.shadowRadius = 4;
+                self.shadowOffset = CGSizeMake(0, 0);
+                self.shadowOpacity = 0.f;
+            }
+        }
+            break;
     }
 }
 

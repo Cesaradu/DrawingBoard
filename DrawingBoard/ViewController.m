@@ -136,7 +136,7 @@
     
     self.inputView.clickConfirmBlock = ^(NSString * _Nonnull text) {
         noteView.text = text;
-        noteView.isEditable = NO;
+        noteView.isSelected = NO;
         [weakSelf hideInputView:YES];
     };
 }

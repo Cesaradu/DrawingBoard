@@ -21,7 +21,7 @@
 @property (nonatomic, strong) ADDrawingLayer *selectedLayer; //选中的
 @property (nonatomic, assign) BOOL isMoveStartPoint;
 @property (nonatomic, assign) BOOL isMoveEndPoint;
-@property (nonatomic, assign) BOOL isMoveLine;
+@property (nonatomic, assign) BOOL isMoveLayer;
 
 //note
 @property (nonatomic, strong) ADNoteView *noteView;
@@ -44,7 +44,7 @@
     self.backgroundColor = [UIColor clearColor];
     self.drawingType = ADDrawingTypeRulerLine;
     self.lineColor = [UIColor colorWithHexString:YellowColor];
-    self.isMoveLine = NO;
+    self.isMoveLayer = NO;
     self.isMoveStartPoint = NO;
     self.isMoveEndPoint = NO;
 }
@@ -89,7 +89,7 @@
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
         case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeTriangle:
         case ADDrawingTypeRectangle:
         case ADDrawingTypeDiamond:
         case ADDrawingTypeTrapezoid:
@@ -134,7 +134,7 @@
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
         case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeTriangle:
         case ADDrawingTypeRectangle:
         case ADDrawingTypeDiamond:
         case ADDrawingTypeTrapezoid:
@@ -171,7 +171,7 @@
         case ADDrawingTypeRulerLine:
         case ADDrawingTypeArrow:
         case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeRightTriangle:
+        case ADDrawingTypeTriangle:
         case ADDrawingTypeRectangle:
         case ADDrawingTypeDiamond:
         case ADDrawingTypeTrapezoid:
@@ -206,7 +206,6 @@
 
 #pragma mark - LayerAction
 - (ADDrawingLayer *)getSelectLayer:(CGPoint)point {
-    self.selectedLayer.isEditable = NO;
     self.selectedLayer = nil;
     for (int i = 0; i < self.layerArray.count; i ++) {
         ADDrawingLayer *layer = self.layerArray[i];
@@ -217,12 +216,12 @@
                     CGPoint p = ((NSValue *)layer.pointArray[i]).CGPointValue;
                     double distance = [self distanceBetweenTwoPoint:p point2:point];
                     if (distance <= 20) {
-                        layer.isEditable = YES;
+                        layer.isSelected = YES;
                         self.selectedLayer = layer;
                         [ADFeedbackManager excuteSelectionFeedback];
                         break;
                     } else {
-                        layer.isEditable = NO;
+                        layer.isSelected = NO;
                     }
                 }
             }
@@ -236,17 +235,17 @@
             case ADDrawingTypeRulerArrow: {
                 double distance = [self calculateDistanceFromTouchPoint:point toStartPoint:layer.startPoint andEndPoint:layer.endPoint];
                 if (distance <= 20) {
-                    layer.isEditable = YES;
+                    layer.isSelected = YES;
                     self.selectedLayer = layer;
                     [ADFeedbackManager excuteSelectionFeedback];
                     break;
                 } else {
-                    layer.isEditable = NO;
+                    layer.isSelected = NO;
                 }
             }
                 break;
                 
-            case ADDrawingTypeRightTriangle:
+            case ADDrawingTypeTriangle:
             case ADDrawingTypeRectangle:
             case ADDrawingTypeDiamond:
             case ADDrawingTypeTrapezoid:
@@ -254,7 +253,15 @@
             case ADDrawingTypeHexagon:
             case ADDrawingTypeCircular:
             case ADDrawingTypeOval: {
-                
+                UIBezierPath *bezierPath = [UIBezierPath bezierPathWithCGPath:layer.path];
+                if ([bezierPath containsPoint:point]) {
+                    layer.isSelected = YES;
+                    self.selectedLayer = layer;
+                    [ADFeedbackManager excuteSelectionFeedback];
+                    break;
+                } else {
+                    layer.isSelected = NO;
+                }
             }
                 break;
                 
@@ -274,7 +281,7 @@
     if (self.selectedLayer) {
         switch (self.selectedLayer.drawingType) {
             case ADDrawingTypeGraffiti: {
-                self.isMoveLine = NO;
+                self.isMoveLayer = NO;
                 self.isMoveStartPoint = NO;
                 self.isMoveEndPoint = NO;
             }
@@ -293,14 +300,14 @@
                     //刚好触摸到起点，或者同时触摸到起点和终点，但是距离起点更近，则移动起点
                     self.isMoveStartPoint = YES;
                     self.isMoveEndPoint = NO;
-                    self.isMoveLine = NO;
+                    self.isMoveLayer = NO;
                 } else if ((startDis > 16 && endDis <= 16) || (startDis <= 16 && endDis <= 16 && startDis > endDis)) {
                     //刚好触摸到终点，或者同时触摸到起点和终点，但是距离终点更近，则移动终点
                     self.isMoveEndPoint = YES;
                     self.isMoveStartPoint = NO;
-                    self.isMoveLine = NO;
+                    self.isMoveLayer = NO;
                 } else {
-                    self.isMoveLine = YES;
+                    self.isMoveLayer = YES;
                     self.isMoveStartPoint = NO;
                     self.isMoveEndPoint = NO;
                 }
@@ -308,7 +315,7 @@
                 break;
                 
                 //图形
-            case ADDrawingTypeRightTriangle:
+            case ADDrawingTypeTriangle:
             case ADDrawingTypeRectangle:
             case ADDrawingTypeDiamond:
             case ADDrawingTypeTrapezoid:
@@ -316,7 +323,9 @@
             case ADDrawingTypeHexagon:
             case ADDrawingTypeCircular:
             case ADDrawingTypeOval: {
-                
+                self.isMoveLayer = YES;
+                self.isMoveStartPoint = NO;
+                self.isMoveEndPoint = NO;
             }
                 break;
                 
@@ -344,7 +353,7 @@
         if (self.isMoveEndPoint) {
             [self.selectedLayer movePathWithEndPoint:currentPoint];
         }
-        if (self.isMoveLine) {
+        if (self.isMoveLayer) {
             [self.selectedLayer movePathWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
         }
     } else {
@@ -389,9 +398,9 @@
         ADNoteView *noteView = self.noteArray[i];
         if (CGRectContainsPoint(noteView.frame, point)) {
             self.selectedNote = noteView;
-            self.selectedNote.isEditable = YES;
+            self.selectedNote.isSelected = YES;
         } else {
-            noteView.isEditable = NO;
+            noteView.isSelected = NO;
         }
     }
     
@@ -407,7 +416,7 @@
         [self removeEmptyNote]; //避免快速点击一下子添加多个
         self.noteView = [[ADNoteView alloc] initWithStartPoint:currentPoint];
         self.noteView.index = (int)self.noteArray.count + 1;
-        self.noteView.isEditable = YES;
+        self.noteView.isSelected = YES;
         [self addSubview:self.noteView];
     }
     

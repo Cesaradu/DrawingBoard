@@ -1,5 +1,5 @@
 //
-//  ADDrawingRightTriangleLayer.h
+//  ADDrawingTriangleLayer.h
 //  DrawingBoard
 //
 //  Created by admin on 2020/6/5.
@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ADDrawingRightTriangleLayer : ADDrawingLayer
+@interface ADDrawingTriangleLayer : ADDrawingLayer
+@property (nonatomic,assign) NSInteger edgeNumber;//正多边形边数
 
 @end
 

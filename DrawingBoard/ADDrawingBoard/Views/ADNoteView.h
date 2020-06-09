@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int index; //序号
 @property (nonatomic, assign) BOOL isIndexLeft; //索引是否居左显示
 @property (nonatomic, strong) NSString *text; //文本内容
-@property (nonatomic, assign) BOOL isEditable; //是否可编辑
+@property (nonatomic, assign) BOOL isSelected; //是否可编辑
 @property (nonatomic, assign) BOOL isMoved; //是否已移动
 @property (nonatomic, assign) BOOL isTextChanged; //文本是否改变
 
