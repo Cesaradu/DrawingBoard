@@ -13,12 +13,12 @@
 - (void)configPath {
     [super configPath];
     UIBezierPath *path = [UIBezierPath bezierPath];
-    CGFloat width = self.endPoint.x-self.startPoint.x;
-    [path moveToPoint:CGPointMake(width/4*1+self.startPoint.x, self.startPoint.y)];
-    [path addLineToPoint:CGPointMake(width/4*3+self.startPoint.x, self.startPoint.y)];
+    CGFloat longWidth = (self.endPoint.x - self.startPoint.x) * 2;
+    [path moveToPoint:CGPointMake(self.startPoint.x - longWidth/4, self.endPoint.y - (self.endPoint.y - self.startPoint.y) * 2)];
+    [path addLineToPoint:CGPointMake(self.endPoint.x - (self.endPoint.x - self.startPoint.x) * 2, self.endPoint.y)];
     [path addLineToPoint:self.endPoint];
-    [path addLineToPoint:CGPointMake(self.startPoint.x, self.endPoint.y)];
-    [path addLineToPoint:CGPointMake(width/4*1+self.startPoint.x, self.startPoint.y)];
+    [path addLineToPoint:CGPointMake(self.startPoint.x + longWidth/4, self.endPoint.y - (self.endPoint.y - self.startPoint.y) * 2)];
+    [path addLineToPoint:CGPointMake(self.startPoint.x - longWidth/4, self.endPoint.y - (self.endPoint.y - self.startPoint.y) * 2)];
     self.path = path.CGPath;
 }
 

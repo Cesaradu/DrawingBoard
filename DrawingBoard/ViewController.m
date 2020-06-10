@@ -39,7 +39,6 @@
     // Do any additional setup after loading the view.
     [self initSetting];
     [self buildUI];
-    
 }
 
 - (void)initSetting {
@@ -47,6 +46,7 @@
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithHexString:BGDarkColor]];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationItem.titleView = self.toolView;
+    self.drawingType = ADDrawingTypeRulerLine;
 }
 
 - (void)buildUI {
@@ -60,20 +60,11 @@
 }
 
 - (void)refreshTitleViewButtons {
-    if (self.drawingBoard.undoArray.count > 0) {
-        [self.toolView enableUndoButton];
-    } else {
-        [self.toolView disableUndoButton];
-    }
-    
-    if (self.drawingBoard.redoArray.count) {
-        [self.toolView enableRedoButton];
-    } else {
-        [self.toolView disableRedoButton];
-    }
+    self.drawingBoard.undoArray.count ? [self.toolView enableUndoButton] : [self.toolView disableUndoButton];
+    self.drawingBoard.redoArray.count ? [self.toolView enableRedoButton] : [self.toolView disableRedoButton];
 }
 
-#pragma mark - ProjectTitleViewDelegate
+#pragma mark - ToolViewDelegate
 - (void)deleteAction {
     if (self.tabBar.index == 1 && self.selectedNoteView) {
         //删除note
@@ -107,7 +98,7 @@
 #pragma mark - ADDrawingBoardDelegate
 - (void)didSelectDrawingLayer:(ADDrawingLayer *)drawingLayer {
     self.selectedLayer = drawingLayer;
-    if (drawingLayer) {
+    if (self.selectedLayer) {
         if (self.tabBar.index != 0) {
             [self.toolView enableDeleteButton];
         }
@@ -117,8 +108,8 @@
 }
 
 - (void)didSelectNoteTextView:(ADNoteView *)noteView {
-    if (noteView) {
-        self.selectedNoteView = noteView;
+    self.selectedNoteView = noteView;
+    if (self.selectedNoteView) {
         //若在颜色模式，不弹出
         if (self.tabBar.index != 0) {
             //选中note
@@ -127,72 +118,6 @@
     } else {
         [self hideInputView:YES];
     }
-    
-    WeakSelf(self);
-    self.inputView.textDidChangeBlock = ^(NSString * _Nonnull text) {
-        noteView.text = text;
-        weakSelf.selectedNoteView.isTextChanged = YES;
-    };
-    
-    self.inputView.clickConfirmBlock = ^(NSString * _Nonnull text) {
-        noteView.text = text;
-        noteView.isSelected = NO;
-        [weakSelf hideInputView:YES];
-    };
-}
-
-- (void)showInputView {
-    self.inputView.noteText = self.selectedNoteView.text;
-    [self.view addSubview:self.inputView];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.inputView.frame = CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR - self.inputView.height, ScreenWidth, self.inputView.height);
-    } completion:^(BOOL finished) {
-        [self.inputView setNeedsLayout];
-        self.drawingBoard.isEntering = YES;
-        [self.toolView enableDeleteButton];
-    }];
-}
-
-- (void)hideInputView:(BOOL)disableDeleteBtn {
-    [self.inputView resignFirstResponder];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.inputView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, self.inputView.height);
-    } completion:^(BOOL finished) {
-        self.drawingBoard.isEntering = NO;
-        [self.inputView removeFromSuperview];
-        if (disableDeleteBtn) {
-            [self.toolView disableDeleteButton];
-        }
-        if (self.selectedNoteView.isTextChanged) {
-            [self.drawingBoard addUndoSteps];
-            [self refreshTitleViewButtons];
-        }
-        self.selectedNoteView.isTextChanged = NO;
-        self.selectedNoteView = nil;
-    }];
-}
-
-- (void)currentDrawingType:(ADDrawingType)drawingType {
-    if (self.tabBar.index == 0) {
-        return;
-    }
-    switch (drawingType) {
-        case ADDrawingTypeText: {
-            self.tabBar.index = 1;
-        }
-            break;
-
-        default: {
-            //除了text，其余都是2
-            self.tabBar.index = 2;
-            if (self.inputView) {
-                [self hideInputView:NO];
-            }
-        }
-            break;
-    }
-    _oldIndex = self.tabBar.index;
-    [self refreshTitleViewButtons];
 }
 
 - (void)didTouchEmptyZone {
@@ -235,6 +160,38 @@
         }
     }
     [self refreshTitleViewButtons];
+}
+
+#pragma mark - Actions
+- (void)showInputView {
+    self.inputView.noteText = self.selectedNoteView.text;
+    [self.view addSubview:self.inputView];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.inputView.frame = CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR - self.inputView.height, ScreenWidth, self.inputView.height);
+    } completion:^(BOOL finished) {
+        [self.inputView setNeedsLayout];
+        self.drawingBoard.isEntering = YES;
+        [self.toolView enableDeleteButton];
+    }];
+}
+
+- (void)hideInputView:(BOOL)disableDeleteBtn {
+    [self.inputView resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.inputView.frame = CGRectMake(0, ScreenHeight, ScreenWidth, self.inputView.height);
+    } completion:^(BOOL finished) {
+        self.drawingBoard.isEntering = NO;
+        [self.inputView removeFromSuperview];
+        if (disableDeleteBtn) {
+            [self.toolView disableDeleteButton];
+        }
+        if (self.selectedNoteView.isTextChanged) {
+            [self.drawingBoard addUndoSteps];
+            [self refreshTitleViewButtons];
+        }
+        self.selectedNoteView.isTextChanged = NO;
+        self.selectedNoteView = nil;
+    }];
 }
 
 - (void)showTypeView {
@@ -285,6 +242,7 @@
                                   @{@"image_normal": @"distance_normal", @"image_select": @"distance_selected", @"title": @"线段"}];
 }
 
+#pragma mark - Lazzy
 - (ADDrawingBoard *)drawingBoard {
     if (!_drawingBoard) {
         _drawingBoard = [[ADDrawingBoard alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight - HEIGHT_NAVBAR - self.tabBar.height)];
@@ -322,6 +280,18 @@
 - (InputView *)inputView {
     if (!_inputView) {
         _inputView = [[InputView alloc] initWithFrame:CGRectMake(0, ScreenHeight - HEIGHT_NAVBAR, ScreenWidth, self.tabBar.height)];
+        
+        WeakSelf(self);
+        _inputView.textDidChangeBlock = ^(NSString * _Nonnull text) {
+            weakSelf.selectedNoteView.text = text;
+            weakSelf.selectedNoteView.isTextChanged = YES;
+        };
+        
+        _inputView.clickConfirmBlock = ^(NSString * _Nonnull text) {
+            weakSelf.selectedNoteView.text = text;
+            weakSelf.selectedNoteView.isSelected = NO;
+            [weakSelf hideInputView:YES];
+        };
     }
     return _inputView;
 }
@@ -340,12 +310,16 @@
         WeakSelf(self);
         _typeView.selectBlock = ^(NSDictionary * _Nonnull dict) {
             weakSelf.drawingType = (ADDrawingType)[dict[@"type"] integerValue];
-            weakSelf.drawingBoard.drawingType = weakSelf.drawingType;
-            weakSelf.typeView.selectIndexPath = [NSIndexPath indexPathForRow:[dict[@"type"] integerValue] inSection:0];
             [weakSelf hideTypeView];
         };
     }
     return _typeView;
+}
+
+- (void)setDrawingType:(ADDrawingType)drawingType {
+    _drawingType = drawingType;
+    self.drawingBoard.drawingType = drawingType;
+    self.typeView.selectIndexPath = [NSIndexPath indexPathForRow:drawingType inSection:0];
 }
 
 @end

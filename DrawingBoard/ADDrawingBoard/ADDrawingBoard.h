@@ -11,14 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ADDrawingBoard;
 @protocol ADDrawingBoardDelegate <NSObject>
-
+@optional
 - (void)didSelectDrawingLayer:(ADDrawingLayer *)drawingLayer;
 - (void)didSelectNoteTextView:(ADNoteView *)noteView;
-- (void)currentDrawingType:(ADDrawingType)drawingType;
 - (void)didTouchEmptyZone;
 - (void)didEndMoveAndTouchAction;
-
 @end
 
 @interface ADDrawingBoard : UIView

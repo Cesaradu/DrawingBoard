@@ -27,7 +27,6 @@
 @property (nonatomic, strong) ADNoteView *noteView;
 @property (nonatomic, strong) ADNoteView *selectedNote; //选中的
 
-
 @end
 
 @implementation ADDrawingBoard
@@ -49,57 +48,21 @@
     self.isMoveEndPoint = NO;
 }
 
-- (void)judgeSelectObj:(CGPoint)currentPoint {
-    [self getSelectNote:currentPoint];
-    [self getSelectLayer:currentPoint];
-    if (self.selectedLayer) {
-        self.drawingType = self.selectedLayer.drawingType;
-        return;
-    }
-    if (self.selectedNote) {
-        self.drawingType = ADDrawingTypeText;
-        return;
-    }
-}
-
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint currentPoint = [touch locationInView:self];
     
     if (self.isColorMode) {
         //颜色模式
-        [self getSelectLayer:currentPoint];
-        if (self.selectedLayer == nil) { //点击空白处
+        if (![self getSelectLayer:currentPoint]) {
+            //点击空白处
             if ([self.delegate respondsToSelector:@selector(didTouchEmptyZone)]) {
                 [self.delegate didTouchEmptyZone];
             }
         }
-    } else {
-        //不在选颜色模式
-        [self judgeSelectObj:currentPoint];
-        if ([self.delegate respondsToSelector:@selector(currentDrawingType:)]) {
-            [self.delegate currentDrawingType:self.drawingType];
-        }
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeGraffiti:
-        case ADDrawingTypeStraightLine:
-        case ADDrawingTypeDottedLine:
-        case ADDrawingTypeRulerLine:
-        case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeTriangle:
-        case ADDrawingTypeRectangle:
-        case ADDrawingTypeDiamond:
-        case ADDrawingTypeTrapezoid:
-        case ADDrawingTypePentagon:
-        case ADDrawingTypeHexagon:
-        case ADDrawingTypeCircular:
-        case ADDrawingTypeOval: {
-            [self configLayerTouchBeginWithCurrentPoint:currentPoint];
-            break;
-        }
         case ADDrawingTypeText: {
             if (!self.isColorMode) {
                 [self configTextTouchBeginWithCurrentPoint:currentPoint];
@@ -107,8 +70,10 @@
             break;
         }
             
-        default:
+        default: {
+            [self configLayerTouchBeginWithCurrentPoint:currentPoint];
             break;
+        }
     }
 }
 
@@ -128,30 +93,15 @@
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeGraffiti:
-        case ADDrawingTypeStraightLine:
-        case ADDrawingTypeDottedLine:
-        case ADDrawingTypeRulerLine:
-        case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeTriangle:
-        case ADDrawingTypeRectangle:
-        case ADDrawingTypeDiamond:
-        case ADDrawingTypeTrapezoid:
-        case ADDrawingTypePentagon:
-        case ADDrawingTypeHexagon:
-        case ADDrawingTypeCircular:
-        case ADDrawingTypeOval: {
-            [self configLayerMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
-            break;
-        }
         case ADDrawingTypeText: {
             [self configTextMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
             break;
         }
         
-        default:
+        default: {
+            [self configLayerMoveWithCurrentPoint:currentPoint andPreviousPoint:previousPoint];
             break;
+        }
     }
 }
 
@@ -165,33 +115,18 @@
     }
     
     switch (self.drawingType) {
-        case ADDrawingTypeGraffiti:
-        case ADDrawingTypeStraightLine:
-        case ADDrawingTypeDottedLine:
-        case ADDrawingTypeRulerLine:
-        case ADDrawingTypeArrow:
-        case ADDrawingTypeRulerArrow:
-        case ADDrawingTypeTriangle:
-        case ADDrawingTypeRectangle:
-        case ADDrawingTypeDiamond:
-        case ADDrawingTypeTrapezoid:
-        case ADDrawingTypePentagon:
-        case ADDrawingTypeHexagon:
-        case ADDrawingTypeCircular:
-        case ADDrawingTypeOval: {
+        case ADDrawingTypeText: {
+            [self configTextTouchEnd];
+            break;
+        }
+            
+        default: {
             if (CGPointEqualToPoint(currentPoint, previousPoint)) {
                 return;
             }
             [self configLayerTouchEnd];
             break;
         }
-        case ADDrawingTypeText: {
-            [self configTextTouchEnd];
-            break;
-        }
-            
-        default:
-            break;
     }
     
     if ([self.delegate respondsToSelector:@selector(didEndMoveAndTouchAction)]) {
@@ -268,19 +203,13 @@
             default:
                 break;
         }
-        
     }
-
     return self.selectedLayer;
 }
 
 - (void)configLayerTouchBeginWithCurrentPoint:(CGPoint)currentPoint {
-    //获取选中的layer
-    [self getSelectLayer:currentPoint];
-    
-    if (self.selectedLayer) {
+    if ([self getSelectLayer:currentPoint]) {
         switch (self.selectedLayer.drawingType) {
-                
                 //自由涂鸦
             case ADDrawingTypeGraffiti: {
                 self.isMoveLayer = NO;
@@ -338,8 +267,6 @@
             default:
                 break;
         }
-    } else {
-        
     }
     
     //传递选中、取消选中事件
@@ -351,9 +278,9 @@
 
 - (void)pinchAction:(UIPinchGestureRecognizer *)recognizer {
     CGFloat scale = recognizer.scale;
-    CGPoint startPoint = self.selectedLayer.startPoint;
-    startPoint = CGPointMake(startPoint.x / scale, startPoint.y / scale);
-    self.selectedLayer.startPoint = startPoint;
+//    CGPoint startPoint = self.selectedLayer.startPoint;
+//    startPoint = CGPointMake(startPoint.x / scale, startPoint.y / scale);
+//    self.selectedLayer.startPoint = startPoint;
     CGPoint endPoint = self.selectedLayer.endPoint;
     endPoint = CGPointMake(endPoint.x * scale, endPoint.y * scale);
     self.selectedLayer.endPoint = endPoint;
@@ -419,6 +346,7 @@
         if (CGRectContainsPoint(noteView.frame, point)) {
             self.selectedNote = noteView;
             self.selectedNote.isSelected = YES;
+            [ADFeedbackManager excuteSelectionFeedback];
         } else {
             noteView.isSelected = NO;
         }
@@ -428,11 +356,9 @@
 }
 
 - (void)configTextTouchBeginWithCurrentPoint:(CGPoint)currentPoint {
-    //获取选中的note
-    [self getSelectNote:currentPoint];
     self.noteView = nil;
     //未选中，则添加
-    if (!self.selectedNote && !self.isEntering) {
+    if (![self getSelectNote:currentPoint] && !self.isEntering) {
         [self removeEmptyNote]; //避免快速点击一下子添加多个
         self.noteView = [[ADNoteView alloc] initWithStartPoint:currentPoint];
         self.noteView.index = (int)self.noteArray.count + 1;
